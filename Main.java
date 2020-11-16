@@ -5,14 +5,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -23,34 +21,52 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+class GameStage
+{
+    GameStage()
+    {
+        Stage substage = new Stage();
+        substage.setTitle("ColorSwitch");
 
-public class Main extends Application {
+        Pane top = new Pane();
+        top.setPrefSize(450, 800);
+        Scene scene2 = new Scene(top);
+        Image bgHS2 = new Image("file:///C:/Resources/hs2.png");
+        ImageView imgvu = new ImageView(bgHS2);
+        imgvu.setFitHeight(800);
+        imgvu.setFitWidth(450);
+        top.getChildren().addAll(imgvu);
+        substage.setScene(scene2);
+        substage.show();
+    }
+}
 
+public class Main extends Application
+{
     private GameMenu menu;
     private GameMenu gameMenu;
+    
     @Override
     public void start(Stage stage) throws Exception
     {
         stage.show();
-        stage.setTitle("Color Switch Professional V_1.0.2");
-//        stage.setHeight(800);
-//        stage.setWidth(450);
+        stage.setTitle("ColorSwitch V_1.0.2");
 
         Pane top = new Pane();
 
-        Label label1=new Label("Epic Gamer Moment");
+        Label label1 = new Label("Play ColorSwitch");
         top.setPrefSize(450, 800);
-        Scene scene1=new Scene(top);
+        Scene scene1 = new Scene(top);
         scene1.setCursor(Cursor.CROSSHAIR);
         Image bgHS1 = new Image("file:///C:/Resources/hs1.png");
-        ImageView imgvu=new ImageView(bgHS1);
+        ImageView imgvu = new ImageView(bgHS1);
         imgvu.setFitHeight(800);
         imgvu.setFitWidth(450);
         gameMenu = new GameMenu();
         gameMenu.setVisible(false);
-        top.getChildren().addAll(  imgvu, gameMenu);
+        top.getChildren().addAll(imgvu,gameMenu);
 
-        FadeTransition ft = new FadeTransition(Duration.seconds(3), gameMenu);
+        FadeTransition ft = new FadeTransition(Duration.seconds(3),gameMenu);
         ft.setFromValue(0);
         ft.setToValue(1);
         gameMenu.setVisible(true);
@@ -58,9 +74,10 @@ public class Main extends Application {
         stage.setScene(scene1);
     }
 
-
-    private class GameMenu extends Parent {
-        public GameMenu() {
+    private class GameMenu extends Parent
+    {
+        public GameMenu()
+        {
             VBox menu0 = new VBox(10);
             VBox menu1 = new VBox(10);
             VBox menuPlay = new VBox(10);
@@ -85,6 +102,7 @@ public class Main extends Application {
                 ft.setToValue(0);
                 ft.setOnFinished(evt -> setVisible(false));
                 ft.play();
+                new GameStage();
             });
 
 
@@ -151,12 +169,14 @@ public class Main extends Application {
 
             getChildren().addAll(bg, menu0, menuPlay);
         }
-    }    
-    
-    private static class menuButtons extends StackPane{
+    }
+
+    private static class menuButtons extends StackPane
+    {
         private Text text;
 
-        public menuButtons(String name){
+        public menuButtons(String name)
+        {
             text=new Text(name);
             text.setFont(text.getFont().font(20));
             text.setFill(Color.WHITE);
@@ -191,9 +211,8 @@ public class Main extends Application {
             setOnMouseReleased(event -> setEffect(null));
         }
 
-        public menuButtons(){
-
-
+        public menuButtons()
+        {
             Circle bg = new Circle(100);
             bg.setOpacity(0.3);
             bg.setFill(Color.BLACK);
@@ -222,9 +241,9 @@ public class Main extends Application {
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println("Bruh");
+    public static void main(String[] args)
+    {
+        System.out.println("Starting Game...");
         launch();
     }
-
 }
