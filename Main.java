@@ -1,4 +1,6 @@
+import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
+import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -11,6 +13,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -18,16 +21,138 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.util.Random;
 
-class GameStage
+class Colours extends Parent
 {
-    GameStage()
-    {
-        Stage substage = new Stage();
-        substage.setTitle("ColorSwitch");
+    protected String coloursarr[] = {"Pink","Purple","Blue","Yellow"};
+    protected int currColour = -1;
+    protected Random r = new Random();
 
+    protected void setColour(int newc)
+    {
+        currColour = newc;
+    }
+    protected String getColour()
+    {
+        return coloursarr[currColour];
+    }
+}
+
+class Ball extends Colours
+{
+    protected Circle circle = new Circle();
+
+    Ball(Stage stage)
+    {
+        this.setColour(r.nextInt(4));
+
+        circle.setRadius(15);
+        circle.setTranslateX(225);
+        circle.setTranslateY(700);
+        circle.setFill(Color.WHITE);
+
+        getChildren().addAll(circle);
+    }
+
+    public void switchColour()
+    {
+
+    }
+    public void jump()
+    {
+
+    }
+}
+
+abstract class Obstacle extends Colours
+{
+    protected int objType = -1;
+
+    public abstract void movement();
+}
+
+class Obj1 extends Obstacle
+{
+    protected Image obj1 = new Image("file:///C:/Resources/Obj1.png");
+    protected ImageView imgvu = new ImageView(obj1);
+
+    Obj1()
+    {
+        imgvu.setFitHeight(600);
+        imgvu.setFitWidth(450);
+
+        getChildren().addAll(imgvu);
+        this.movement();
+    }
+
+    public void movement()
+    {
+        RotateTransition rt = new RotateTransition(Duration.millis(5000),imgvu);
+        rt.setByAngle(360);
+        rt.setCycleCount(Animation.INDEFINITE);
+
+        rt.play();
+    }
+}
+
+class Star extends Parent
+{
+    protected Image star1 = new Image("file:///C:/Resources/1.png");
+    protected ImageView s1 = new ImageView(star1);
+
+    Star()
+    {
+        s1.setTranslateX(205);
+        s1.setTranslateY(20);
+        s1.setFitHeight(40);
+        s1.setFitWidth(40);
+        s1.setEffect(new GaussianBlur(3));
+
+        getChildren().addAll(s1);
+    }
+}
+
+class ColourSwitcher extends Colours
+{
+    protected int nextColour = -1;
+    protected Image switcher1 = new Image("file:///C:/Resources/2.png");
+    protected ImageView sw1 = new ImageView(switcher1);
+
+    ColourSwitcher(Ball b)
+    {
+        randomColour(b);
+
+        sw1.setTranslateX(205);
+        sw1.setTranslateY(550);
+        sw1.setFitHeight(40);
+        sw1.setFitWidth(40);
+
+        getChildren().addAll(sw1);
+    }
+
+    protected void randomColour(Ball b)
+    {
+        while(nextColour==b.currColour || nextColour==-1)
+        {
+            nextColour = r.nextInt(4);
+        }
+    }
+}
+
+class Game
+{
+    private long score = 0;
+    private long savedscore1 = 0;
+    private long savedscore2 = 0;
+    private int rungame = 0;
+    private int bonusgame = 0;
+
+    Game(Stage stage)
+    {
         Pane top = new Pane();
         top.setPrefSize(450, 800);
         Scene scene2 = new Scene(top);
@@ -35,9 +160,14 @@ class GameStage
         ImageView imgvu = new ImageView(bgHS2);
         imgvu.setFitHeight(800);
         imgvu.setFitWidth(450);
-        top.getChildren().addAll(imgvu);
-        substage.setScene(scene2);
-        substage.show();
+        Ball ball = new Ball(stage);
+        Obj1 o1 = new Obj1();
+        Star s1 = new Star();
+        ColourSwitcher cs1 = new ColourSwitcher(ball);
+        top.getChildren().addAll(imgvu,ball,o1,s1,cs1);
+
+        stage.setScene(scene2);
+        stage.show();
     }
 }
 
@@ -45,7 +175,7 @@ public class Main extends Application
 {
     private GameMenu menu;
     private GameMenu gameMenu;
-    
+
     @Override
     public void start(Stage stage) throws Exception
     {
@@ -62,7 +192,7 @@ public class Main extends Application
         ImageView imgvu = new ImageView(bgHS1);
         imgvu.setFitHeight(800);
         imgvu.setFitWidth(450);
-        gameMenu = new GameMenu();
+        gameMenu = new GameMenu(stage);
         gameMenu.setVisible(false);
         top.getChildren().addAll(imgvu,gameMenu);
 
@@ -72,11 +202,12 @@ public class Main extends Application
         gameMenu.setVisible(true);
         ft.play();
         stage.setScene(scene1);
+        stage.centerOnScreen();
     }
 
     private class GameMenu extends Parent
     {
-        public GameMenu()
+        public GameMenu(Stage stage)
         {
             VBox menu0 = new VBox(10);
             VBox menu1 = new VBox(10);
@@ -102,17 +233,13 @@ public class Main extends Application
                 ft.setToValue(0);
                 ft.setOnFinished(evt -> setVisible(false));
                 ft.play();
-                new GameStage();
+                new Game(stage);
             });
 
 
             menuButtons btnCircle = new menuButtons();
             btnCircle.setOnMouseClicked(event -> {
-//                FadeTransition ft = new FadeTransition(Duration.seconds(0.5), this);
-//                ft.setFromValue(1);
-//                ft.setToValue(0);
-//                ft.setOnFinished(evt -> setVisible(false));
-//                ft.play();
+                new Game(stage);
             });
 
             menuButtons btnOptions = new menuButtons("LOAD GAME");
@@ -186,7 +313,7 @@ public class Main extends Application
             bg.setFill(Color.BLACK);
             bg.setEffect(new GaussianBlur(3.5));
 
-            setAlignment(Pos.CENTER_LEFT);
+            setAlignment(Pos.CENTER);
             setRotate(-0.5);
             getChildren().addAll(bg, text);
 
@@ -245,5 +372,6 @@ public class Main extends Application
     {
         System.out.println("Starting Game...");
         launch();
+        System.out.println("Exiting Game...");
     }
 }
