@@ -1,4 +1,7 @@
-import javafx.animation.Animation;
+//GROUP 66
+//Ritik Vatsal (2019321) | Vaibhav Saxena (2019342)
+
+import javafx.animation.*;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,24 +15,24 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.animation.FadeTransition;
-import javafx.animation.RotateTransition;
-import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.*;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
+
+import java.sql.Struct;
 import java.util.Random;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javax.sound.midi.Soundbank;
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.Timer;
 
 class Colours extends Parent
 {
@@ -61,6 +64,7 @@ class Ball extends Colours
         circle.setFill(Color.WHITE);
 
         getChildren().addAll(circle);
+        this.jump();
     }
 
     public void switchColour()
@@ -69,7 +73,16 @@ class Ball extends Colours
     }
     public void jump()
     {
-
+        Path singJump =new Path();
+        singJump.getElements().addAll(new MoveTo(225,700), new CubicCurveTo(225, 630, 225, 630, 225, 630));
+        PathTransition singExec=new PathTransition();
+        singExec.setDuration(Duration.millis(700));
+        singExec.setPath(singJump);
+        singExec.setNode(circle);
+        singExec.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        singExec.setCycleCount(Timeline.INDEFINITE);
+        singExec.setAutoReverse(true);
+        singExec.play();
     }
 }
 
@@ -87,8 +100,10 @@ class Obj1 extends Obstacle
 
     Obj1()
     {
-        imgvu.setFitHeight(600);
-        imgvu.setFitWidth(450);
+        imgvu.setTranslateX(75);
+        imgvu.setTranslateY(120);
+        imgvu.setFitHeight(300);
+        imgvu.setFitWidth(303);
 
         getChildren().addAll(imgvu);
         this.movement();
@@ -96,8 +111,8 @@ class Obj1 extends Obstacle
 
     public void movement()
     {
-        RotateTransition rt = new RotateTransition(Duration.millis(5000),imgvu);
-        rt.setByAngle(360);
+        RotateTransition rt = new RotateTransition(Duration.millis(30500),imgvu);
+        rt.setByAngle(3600);
         rt.setCycleCount(Animation.INDEFINITE);
 
         if (!rt.isAutoReverse()){
@@ -120,6 +135,23 @@ class Star extends Parent
         s1.setEffect(new GaussianBlur(3));
 
         getChildren().addAll(s1);
+        this.twinkle();
+    }
+
+    public void twinkle(){
+
+        FadeTransition ft = new FadeTransition(Duration.seconds(1),s1);
+
+
+//            ft.setFromValue(0);
+//            ft.setToValue(1);
+//
+
+        ft.setAutoReverse(true);
+        s1.setVisible(true);
+        ft.setCycleCount(Timeline.INDEFINITE);
+        ft.play();
+
     }
 }
 
@@ -137,7 +169,7 @@ class ColourSwitcher extends Colours
         sw1.setTranslateY(550);
         sw1.setFitHeight(40);
         sw1.setFitWidth(40);
-
+        movement();
         getChildren().addAll(sw1);
     }
 
@@ -148,46 +180,66 @@ class ColourSwitcher extends Colours
             nextColour = r.nextInt(4);
         }
     }
-}
 
-class Game
-{
-    private long score = 0;
-    private long savedscore1 = 0;
-    private long savedscore2 = 0;
-    private int rungame = 0;
-    private int bonusgame = 0;
-
-    Game(Stage stage)
+    public void movement()
     {
-        Pane top = new Pane();
-        top.setPrefSize(450, 800);
-        Scene scene2 = new Scene(top);
-        Image bgHS2 = new Image("file:///C:/Resources/hs2.png");
-        ImageView imgvu = new ImageView(bgHS2);
-        imgvu.setFitHeight(800);
-        imgvu.setFitWidth(450);
-        Ball ball = new Ball(stage);
-        Obj1 o1 = new Obj1();
-        Star s1 = new Star();
-        ColourSwitcher cs1 = new ColourSwitcher(ball);
-        top.getChildren().addAll(imgvu,ball,o1,s1,cs1);
-        int view;
-        if ((view=4)<6){
-            stage.setScene(scene2);
-            stage.show();
+        RotateTransition rt = new RotateTransition(Duration.millis(150000),sw1);
+        rt.setByAngle(72000);
+        rt.setCycleCount(Animation.INDEFINITE);
+
+        if (!rt.isAutoReverse()){
+            rt.play();
         }
     }
 }
 
+
+
 public class Main extends Application
 {
 
-
     MediaPlayer mp;
-    private GameMenu menu;
+    private GameMenu igmenu;
+    private GameMenu scoreDisplay;
     private GameMenu gameMenu;
     private GameMenu splash;
+
+
+    class Game
+    {
+        private long score = 0;
+        private long savedscore1 = 0;
+        private long savedscore2 = 0;
+        private int rungame = 0;
+        private int bonusgame = 0;
+
+        Game(Stage stage)
+        {
+            Pane top = new Pane();
+            top.setPrefSize(450, 800);
+            Scene scene2 = new Scene(top);
+            Image bgHS2 = new Image("file:///C:/Resources/hs2.png");
+            ImageView imgvu = new ImageView(bgHS2);
+            imgvu.setFitHeight(800);
+            imgvu.setFitWidth(450);
+            Ball ball = new Ball(stage);
+            Obj1 o1 = new Obj1();
+            Star s1 = new Star();
+            igmenu = new GameMenu(stage,2);
+            scoreDisplay=new GameMenu(stage,3);
+            igmenu.setVisible(true);
+            scoreDisplay.setVisible(true);
+            ColourSwitcher cs1 = new ColourSwitcher(ball);
+            top.getChildren().addAll(imgvu,ball,o1,s1,cs1, igmenu, scoreDisplay);
+            int view;
+            if ((view=4)<6){
+                stage.setScene(scene2);
+                stage.show();
+            }
+        }
+    }
+
+
 
 
     public void BGmusic(int status) {
@@ -202,6 +254,7 @@ public class Main extends Application
     @Override
     public void start(Stage stage) throws Exception
     {
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
         stage.setTitle("ColorSwitch V_1.0.2");
 
@@ -213,17 +266,62 @@ public class Main extends Application
         scene1.setCursor(Cursor.CROSSHAIR);
         Image bgHS1 = new Image("file:///C:/Resources/hs1.png");
         ImageView imgvu = new ImageView(bgHS1);
+
         imgvu.setFitHeight(800);
         imgvu.setFitWidth(450);
+
+        //ROTATING RINGS
+
+        Image out = new Image("file:///C:/Resources/outer.png");
+        ImageView outer = new ImageView(out);
+
+        outer.setFitHeight(370);
+        outer.setFitWidth(370);
+        outer.setTranslateX(42);
+        outer.setTranslateY(220);
+
+        Image mid = new Image("file:///C:/Resources/MID.png");
+        ImageView middle = new ImageView(mid);
+
+        middle.setFitHeight(306);
+        middle.setFitWidth(306);
+        middle.setTranslateX(74.5);
+        middle.setTranslateY(252);
+
+        Image in = new Image("file:///C:/Resources/INN.png");
+        ImageView inner = new ImageView(in);
+
+        inner.setFitHeight(236);
+        inner.setFitWidth(236);
+        inner.setTranslateX(110);
+        inner.setTranslateY(287);
+
+        RotateTransition rto = new RotateTransition(Duration.millis(195500),outer);
+        rto.setByAngle(36000);
+        rto.setCycleCount(Animation.INDEFINITE);
+        RotateTransition rtm = new RotateTransition(Duration.millis(195500),middle);
+        rtm.setByAngle(-36000);
+        rtm.setCycleCount(Animation.INDEFINITE);
+        RotateTransition rti = new RotateTransition(Duration.millis(195500),inner);
+        rti.setByAngle(36000);
+        rti.setCycleCount(Animation.INDEFINITE);
+
+        if (!rto.isAutoReverse()){
+            rto.play();
+            rtm.play();
+            rti.play();
+        }
+
+        //END
+
 
         BGmusic(1);
         gameMenu = new GameMenu(stage,0);
         splash = new GameMenu(stage,1);
         gameMenu.setVisible(false);
-        top.getChildren().addAll(imgvu,gameMenu,splash);
+        top.getChildren().addAll(imgvu,gameMenu,splash,outer,middle,inner);
 
         splash.setVisible(true);
-
 
         scene1.setOnKeyPressed(event -> {
 
@@ -244,6 +342,7 @@ public class Main extends Application
         });
         stage.setScene(scene1);
         stage.centerOnScreen();
+
     }
 
     private class GameMenu extends Parent
@@ -382,6 +481,80 @@ public class Main extends Application
                 int view;
                 if ((view=4)<6){
                 start.getChildren().addAll(starter);}
+                getChildren().addAll(start);
+            }
+
+            else if (type==2){
+                VBox menu0 = new VBox(10);
+
+
+                VBox pausebtn = new VBox();
+                menu0.setTranslateX(100);
+                menu0.setTranslateY(630);
+
+                menu0.setVisible(false);
+                pausebtn.setTranslateX(370);
+                pausebtn.setTranslateY(10);
+
+
+                menuButtons btnSave = new menuButtons("SAVE GAME", 0,1);
+
+                Rectangle bg = new Rectangle(450, 800);
+                bg.setFill(Color.GRAY);
+                menuButtons Pause = new menuButtons("PAUSE", 0,65);
+                Pause.setOnMouseClicked(event -> {
+
+                    FadeTransition ft = new FadeTransition(Duration.seconds(1),menu0);
+
+                        ft.setFromValue(0);
+                        ft.setToValue(1);
+                    bg.setOpacity(0.9);
+                    bg.setVisible(true);
+                    menu0.setVisible(true);
+                    ft.play();
+
+
+
+                });
+                menuButtons musicCtrl = new menuButtons("TOGGLE MUSIC", 0,1);
+                musicCtrl.setOnMouseClicked(event -> {
+
+
+                    if (mp.isMute()==true){
+                        mp.setMute(false);
+                    }
+                    else{
+                        mp.setMute(true);
+                    }
+
+                });
+
+                menuButtons btnExit = new menuButtons("EXIT", 0,1);
+                btnExit.setOnMouseClicked(event -> {
+                    System.exit(0);
+                });
+
+                menu0.getChildren().addAll(btnSave, musicCtrl,  btnExit);
+                pausebtn.getChildren().addAll(Pause);
+
+
+                int VisibleParamCheck;
+                if (!isVisible()){VisibleParamCheck = 0;}
+                else
+                {VisibleParamCheck=1;}
+                bg.setOpacity(0.1);
+//                bg.setVisible(false);
+                getChildren().addAll( bg,menu0,pausebtn);
+            }
+
+            else if (type==3){
+                VBox start = new VBox(10);
+                start.setTranslateX(6);
+                start.setTranslateY(10);
+                menuButtons starter = new menuButtons("SCORE : 3",2,0);
+                int view;
+                if ((view=4)<6){
+                    start.getChildren().addAll(starter);}
                 getChildren().addAll(start);
             }
         }
