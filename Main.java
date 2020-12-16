@@ -81,13 +81,13 @@ class Ball extends Colours
         switch(cs.nextColour)
         {
             case 0: circle.setFill(Color.DEEPPINK);
-                    break;
+                break;
             case 1: circle.setFill(Color.DARKVIOLET);
-                    break;
+                break;
             case 2: circle.setFill(Color.DEEPSKYBLUE);
-                    break;
+                break;
             case 3: circle.setFill(Color.YELLOW);
-                    break;
+                break;
         }
     }
 }
@@ -227,8 +227,11 @@ class ColourSwitcher extends Colours
 
 public class Main extends Application
 {
-
+    int GameOver;
     MediaPlayer mp;
+    MediaPlayer ded;
+    MediaPlayer pnt;
+    MediaPlayer swch;
     private GameMenu igmenu;
     private GameMenu scoreDisplay;
     private GameMenu gameMenu;
@@ -317,6 +320,7 @@ public class Main extends Application
                     {
                         if(s1.passed==0)
                         {
+                            yesyesyes(1);
                             System.out.println("Score +1!");
                             score++;
                             String newscore = "SCORE : " + Long.toString(score);
@@ -328,7 +332,7 @@ public class Main extends Application
                     if(sh2.getLayoutBounds().getWidth()!=-1)
                     {
                         if(cs1.switched==0)
-                        {
+                        {   change(1);
                             cs1.switched = 1;
                             cs1.hide();
                             ball.switchColour(cs1);
@@ -343,14 +347,16 @@ public class Main extends Application
                         if(ball.hitgrnd==0)
                         {
                             ball.hitgrnd = 1;
+                            MissionFailed(1);
                             System.out.println("Hit Ground! Game Over!");
+                            GameOver=1;
+
                         }
                     }
                 }
             }));
             t3.setCycleCount(Timeline.INDEFINITE);
             t3.play();
-
             scene2.setOnMousePressed(
                     event -> {
                         t2.pause();
@@ -374,6 +380,32 @@ public class Main extends Application
         if (status==0)mp.pause();
 
     }
+
+    public void MissionFailed(int status) {
+        Media bgMusic;
+        bgMusic = new Media("file:///C:/Resources/ded.mp3");
+        ded =new MediaPlayer(bgMusic);
+        if (status==1)ded.play();
+        if (status==0)ded.pause();
+    }
+
+    public void yesyesyes(int status) {
+        Media bgMusic;
+        bgMusic = new Media("file:///C:/Resources/pnt.mp3");
+        pnt =new MediaPlayer(bgMusic);
+        if (status==1)pnt.play();
+        if (status==0)pnt.pause();
+    }
+
+    public void change(int status) {
+        Media bgMusic;
+        bgMusic = new Media("file:///C:/Resources/swch.mp3");
+        swch =new MediaPlayer(bgMusic);
+        if (status==1)swch.play();
+        if (status==0)swch.pause();
+    }
+
+
 
     @Override
     public void start(Stage stage) throws Exception
@@ -463,6 +495,10 @@ public class Main extends Application
             else {}
 
         });
+
+        if (GameOver==1){
+            System.out.println("oof");
+        }
         stage.setScene(scene1);
         stage.centerOnScreen();
 
@@ -622,7 +658,12 @@ public class Main extends Application
                 pausebtn.setTranslateY(10);
 
 
-                menuButtons btnSave = new menuButtons("SAVE GAME", 0,1);
+                menuButtons btnnew = new menuButtons("NEW GAME", 0,1);
+                btnnew.setOnMouseClicked(event -> {
+                    new Game(stage);
+                });
+
+                menuButtons btnsave = new menuButtons("SAVE GAME", 0,1);
 
                 Rectangle bg = new Rectangle(450, 800);
                 bg.setFill(Color.GRAY);
@@ -658,7 +699,7 @@ public class Main extends Application
                     System.exit(0);
                 });
 
-                menu0.getChildren().addAll(btnSave, musicCtrl,  btnExit);
+                menu0.getChildren().addAll(btnnew,btnsave, musicCtrl,  btnExit);
                 pausebtn.getChildren().addAll(Pause);
 
 
