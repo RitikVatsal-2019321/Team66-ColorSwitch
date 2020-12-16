@@ -237,6 +237,13 @@ public class Main extends Application
     private GameMenu gameMenu;
     private GameMenu splash;
 
+    protected Timeline t1;
+    protected Timeline t2;
+    protected Timeline t3;
+    protected Timeline t4;
+
+    protected int paused = 0;
+
     class Game
     {
         private long score = 0;
@@ -247,6 +254,10 @@ public class Main extends Application
 
         Game(Stage stage)
         {
+            System.out.println("New Game Started!");
+
+            GameOver = 0;
+            paused = 0;
             Pane top = new Pane();
             top.setPrefSize(450, 800);
             Scene scene2 = new Scene(top);
@@ -255,6 +266,7 @@ public class Main extends Application
             imgvu.setFitHeight(800);
             imgvu.setFitWidth(450);
             Ball ball = new Ball(stage);
+            ball.hitgrnd = 0;
             Obj1 o1 = new Obj1();
             Star s1 = new Star();
             igmenu = new GameMenu(stage,2);
@@ -271,7 +283,7 @@ public class Main extends Application
             }
 
             // Scrolling
-            Timeline t4 = new Timeline(new KeyFrame(Duration.millis(20),new EventHandler<ActionEvent>() {
+            t4 = new Timeline(new KeyFrame(Duration.millis(20),new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent etl)
                 {
@@ -284,7 +296,7 @@ public class Main extends Application
             t4.setCycleCount(Timeline.INDEFINITE);
 
             // Ball Up
-            Timeline t1 = new Timeline(new KeyFrame(Duration.millis(20),new EventHandler<ActionEvent>() {
+            t1 = new Timeline(new KeyFrame(Duration.millis(20),new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent etl)
                 {
@@ -296,7 +308,7 @@ public class Main extends Application
             t1.setCycleCount(Timeline.INDEFINITE);
 
             // Ball Down
-            Timeline t2 = new Timeline(new KeyFrame(Duration.millis(20),new EventHandler<ActionEvent>() {
+            t2 = new Timeline(new KeyFrame(Duration.millis(20),new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent etl)
                 {
@@ -307,7 +319,7 @@ public class Main extends Application
             t2.setCycleCount(Timeline.INDEFINITE);
 
             // Collision
-            Timeline t3 = new Timeline(new KeyFrame(Duration.millis(1),new EventHandler<ActionEvent>() {
+            t3 = new Timeline(new KeyFrame(Duration.millis(1),new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent etl)
                 {
@@ -349,24 +361,30 @@ public class Main extends Application
                             ball.hitgrnd = 1;
                             MissionFailed(1);
                             System.out.println("Hit Ground! Game Over!");
-                            GameOver=1;
-
+                            GameOver = 1;
                         }
                     }
                 }
             }));
             t3.setCycleCount(Timeline.INDEFINITE);
             t3.play();
+
             scene2.setOnMousePressed(
                     event -> {
-                        t2.pause();
-                        t1.play();
+                        if(paused==0)
+                        {
+                            t2.pause();
+                            t1.play();
+                        }
                     }
             );
             scene2.setOnMouseReleased(
                     event -> {
-                        t1.pause();
-                        t2.play();
+                        if(paused==0)
+                        {
+                            t1.pause();
+                            t2.play();
+                        }
                     }
             );
         }
@@ -496,9 +514,6 @@ public class Main extends Application
 
         });
 
-        if (GameOver==1){
-            System.out.println("oof");
-        }
         stage.setScene(scene1);
         stage.centerOnScreen();
 
@@ -669,16 +684,37 @@ public class Main extends Application
                 bg.setFill(Color.GRAY);
                 menuButtons Pause = new menuButtons("PAUSE", 0,65);
                 Pause.setOnMouseClicked(event -> {
+                    if(paused==0)
+                    {
+                        FadeTransition ft = new FadeTransition(Duration.seconds(1),menu0);
 
-                    FadeTransition ft = new FadeTransition(Duration.seconds(1),menu0);
+                        ft.setFromValue(0);
+                        ft.setToValue(1);
+                        bg.setOpacity(0.9);
+                        bg.setVisible(true);
+                        menu0.setVisible(true);
+                        ft.play();
 
-                    ft.setFromValue(0);
-                    ft.setToValue(1);
-                    bg.setOpacity(0.9);
-                    bg.setVisible(true);
-                    menu0.setVisible(true);
-                    ft.play();
+                        paused = 1;
+                        t1.pause();
+                        t2.pause();
+                        t3.pause();
+                        t4.pause();
+                    }
+                    else if(paused==1)
+                    {
+                        FadeTransition ft = new FadeTransition(Duration.seconds(1),menu0);
 
+                        ft.setFromValue(1);
+                        ft.setToValue(0);
+                        bg.setOpacity(0.9);
+                        bg.setVisible(false);
+                        menu0.setVisible(false);
+                        ft.play();
+
+                        paused = 0;
+                        t3.play();
+                    }
                 });
                 menuButtons musicCtrl = new menuButtons("TOGGLE MUSIC", 0,1);
                 musicCtrl.setOnMouseClicked(event -> {
