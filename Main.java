@@ -3,6 +3,7 @@
 
 import javafx.animation.*;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -63,6 +64,7 @@ class Ball extends Colours
     protected double xval = 225;
     protected double yval = 700;
     protected int hitgrnd = 0;
+    protected int hitobstacle = 0;
 
     Ball(Stage stage)
     {
@@ -96,28 +98,424 @@ abstract class Obstacle extends Colours
 {
     protected int objType = -1;
 
-    public abstract void movement();
+    public abstract void movement(Group g);
+
+    protected Path arc1(double centerY)
+    {
+        double centerX = 225;
+        double rad = 140;
+        double innerrad = 120;
+        Color bg = Color.DEEPPINK;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX + innerrad);
+        mv.setY(centerY);
+
+        ArcTo arcdraw1 = new ArcTo();
+        arcdraw1.setRadiusX(innerrad);
+        arcdraw1.setRadiusY(innerrad);
+        arcdraw1.setX(centerX);
+        arcdraw1.setY(centerY - innerrad);
+
+        MoveTo moveTo2 = new MoveTo();
+        moveTo2.setX(centerX + innerrad);
+        moveTo2.setY(centerY);
+
+        HLineTo horizontal = new HLineTo();
+        horizontal.setX(centerX + rad);
+
+        ArcTo arcdraw2 = new ArcTo();
+        arcdraw2.setRadiusX(rad);
+        arcdraw2.setRadiusY(rad);
+        arcdraw2.setX(centerX);
+        arcdraw2.setY(centerY - rad);
+
+        VLineTo vertical = new VLineTo();
+        vertical.setY(centerY - innerrad);
+
+        p.getElements().add(mv);
+        p.getElements().add(arcdraw1);
+        p.getElements().add(moveTo2);
+        p.getElements().add(horizontal);
+        p.getElements().add(arcdraw2);
+        p.getElements().add(vertical);
+
+        return p;
+    }
+    protected Path arc2(double centerY)
+    {
+        double centerX = 225;
+        double rad = 140;
+        double innerrad = 120;
+        Color bg = Color.DEEPSKYBLUE;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX);
+        mv.setY(centerY - innerrad);
+
+        ArcTo arcdraw1 = new ArcTo();
+        arcdraw1.setRadiusX(innerrad);
+        arcdraw1.setRadiusY(innerrad);
+        arcdraw1.setX(centerX - innerrad);
+        arcdraw1.setY(centerY);
+
+        MoveTo moveTo2 = new MoveTo();
+        moveTo2.setX(centerX);
+        moveTo2.setY(centerY - innerrad);
+
+        VLineTo vertical = new VLineTo();
+        vertical.setY(centerY - rad);
+
+        ArcTo arcdraw2 = new ArcTo();
+        arcdraw2.setRadiusX(rad);
+        arcdraw2.setRadiusY(rad);
+        arcdraw2.setX(centerX - rad);
+        arcdraw2.setY(centerY);
+
+        HLineTo horizontal = new HLineTo();
+        horizontal.setX(centerX - innerrad);
+
+        p.getElements().add(mv);
+        p.getElements().add(arcdraw1);
+        p.getElements().add(moveTo2);
+        p.getElements().add(vertical);
+        p.getElements().add(arcdraw2);
+        p.getElements().add(horizontal);
+
+        return p;
+    }
+    protected Path arc3(double centerY)
+    {
+        double centerX = 225;
+        double rad = 140;
+        double innerrad = 120;
+        Color bg = Color.DARKVIOLET;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX - innerrad);
+        mv.setY(centerY);
+
+        ArcTo arcdraw1 = new ArcTo();
+        arcdraw1.setRadiusX(innerrad);
+        arcdraw1.setRadiusY(innerrad);
+        arcdraw1.setX(centerX);
+        arcdraw1.setY(centerY + innerrad);
+
+        MoveTo moveTo2 = new MoveTo();
+        moveTo2.setX(centerX - innerrad);
+        moveTo2.setY(centerY);
+
+        HLineTo horizontal = new HLineTo();
+        horizontal.setX(centerX - rad);
+
+        ArcTo arcdraw2 = new ArcTo();
+        arcdraw2.setRadiusX(rad);
+        arcdraw2.setRadiusY(rad);
+        arcdraw2.setX(centerX);
+        arcdraw2.setY(centerY + rad);
+
+        VLineTo vertical = new VLineTo();
+        vertical.setY(centerY + innerrad);
+
+        p.getElements().add(mv);
+        p.getElements().add(arcdraw1);
+        p.getElements().add(moveTo2);
+        p.getElements().add(horizontal);
+        p.getElements().add(arcdraw2);
+        p.getElements().add(vertical);
+
+        return p;
+    }
+    protected Path arc4(double centerY)
+    {
+        double centerX = 225;
+        double rad = 140;
+        double innerrad = 120;
+        Color bg = Color.YELLOW;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX);
+        mv.setY(centerY + innerrad);
+
+        ArcTo arcdraw1 = new ArcTo();
+        arcdraw1.setRadiusX(innerrad);
+        arcdraw1.setRadiusY(innerrad);
+        arcdraw1.setX(centerX + innerrad);
+        arcdraw1.setY(centerY);
+
+        MoveTo moveTo2 = new MoveTo();
+        moveTo2.setX(centerX);
+        moveTo2.setY(centerY + innerrad);
+
+        VLineTo vertical = new VLineTo();
+        vertical.setY(centerY + rad);
+        
+        ArcTo arcdraw2 = new ArcTo();
+        arcdraw2.setRadiusX(rad);
+        arcdraw2.setRadiusY(rad);
+        arcdraw2.setX(centerX + rad);
+        arcdraw2.setY(centerY);
+
+        HLineTo horizontal = new HLineTo();
+        horizontal.setX(centerX + innerrad);
+
+        p.getElements().add(mv);
+        p.getElements().add(arcdraw1);
+        p.getElements().add(moveTo2);
+        p.getElements().add(vertical);
+        p.getElements().add(arcdraw2);
+        p.getElements().add(horizontal);
+
+        return p;
+    }
+
+    protected Path rect1(double centerY)
+    {
+        double centerX = 225;
+        double rad = 140;
+        double innerrad = 120;
+        Color bg = Color.DEEPPINK;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX + innerrad);
+        mv.setY(centerY);
+
+        LineTo arcdraw1 = new LineTo();
+        arcdraw1.setX(centerX);
+        arcdraw1.setY(centerY - innerrad);
+
+        MoveTo moveTo2 = new MoveTo();
+        moveTo2.setX(centerX + innerrad);
+        moveTo2.setY(centerY);
+
+        HLineTo horizontal = new HLineTo();
+        horizontal.setX(centerX + rad);
+
+        LineTo arcdraw2 = new LineTo();
+        arcdraw2.setX(centerX);
+        arcdraw2.setY(centerY - rad);
+
+        VLineTo vertical = new VLineTo();
+        vertical.setY(centerY - innerrad);
+
+        p.getElements().add(mv);
+        p.getElements().add(arcdraw1);
+        p.getElements().add(moveTo2);
+        p.getElements().add(horizontal);
+        p.getElements().add(arcdraw2);
+        p.getElements().add(vertical);
+
+        return p;
+    }
+    protected Path rect2(double centerY)
+    {
+        double centerX = 225;
+        double rad = 140;
+        double innerrad = 120;
+        Color bg = Color.DEEPSKYBLUE;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX);
+        mv.setY(centerY - innerrad);
+
+        LineTo arcdraw1 = new LineTo();
+        arcdraw1.setX(centerX - innerrad);
+        arcdraw1.setY(centerY);
+
+        MoveTo moveTo2 = new MoveTo();
+        moveTo2.setX(centerX);
+        moveTo2.setY(centerY - innerrad);
+
+        VLineTo vertical = new VLineTo();
+        vertical.setY(centerY - rad);
+
+        LineTo arcdraw2 = new LineTo();
+        arcdraw2.setX(centerX - rad);
+        arcdraw2.setY(centerY);
+
+        HLineTo horizontal = new HLineTo();
+        horizontal.setX(centerX - innerrad);
+
+        p.getElements().add(mv);
+        p.getElements().add(arcdraw1);
+        p.getElements().add(moveTo2);
+        p.getElements().add(vertical);
+        p.getElements().add(arcdraw2);
+        p.getElements().add(horizontal);
+
+        return p;
+    }
+    protected Path rect3(double centerY)
+    {
+        double centerX = 225;
+        double rad = 140;
+        double innerrad = 120;
+        Color bg = Color.DARKVIOLET;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX - innerrad);
+        mv.setY(centerY);
+
+        LineTo arcdraw1 = new LineTo();
+        arcdraw1.setX(centerX);
+        arcdraw1.setY(centerY + innerrad);
+
+        MoveTo moveTo2 = new MoveTo();
+        moveTo2.setX(centerX - innerrad);
+        moveTo2.setY(centerY);
+
+        HLineTo horizontal = new HLineTo();
+        horizontal.setX(centerX - rad);
+
+        LineTo arcdraw2 = new LineTo();
+        arcdraw2.setX(centerX);
+        arcdraw2.setY(centerY + rad);
+
+        VLineTo vertical = new VLineTo();
+        vertical.setY(centerY + innerrad);
+
+        p.getElements().add(mv);
+        p.getElements().add(arcdraw1);
+        p.getElements().add(moveTo2);
+        p.getElements().add(horizontal);
+        p.getElements().add(arcdraw2);
+        p.getElements().add(vertical);
+
+        return p;
+    }
+    protected Path rect4(double centerY)
+    {
+        double centerX = 225;
+        double rad = 140;
+        double innerrad = 120;
+        Color bg = Color.YELLOW;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX);
+        mv.setY(centerY + innerrad);
+
+        LineTo arcdraw1 = new LineTo();
+        arcdraw1.setX(centerX + innerrad);
+        arcdraw1.setY(centerY);
+
+        MoveTo moveTo2 = new MoveTo();
+        moveTo2.setX(centerX);
+        moveTo2.setY(centerY + innerrad);
+
+        VLineTo vertical = new VLineTo();
+        vertical.setY(centerY + rad);
+
+        LineTo arcdraw2 = new LineTo();
+        arcdraw2.setX(centerX + rad);
+        arcdraw2.setY(centerY);
+
+        HLineTo horizontal = new HLineTo();
+        horizontal.setX(centerX + innerrad);
+
+        p.getElements().add(mv);
+        p.getElements().add(arcdraw1);
+        p.getElements().add(moveTo2);
+        p.getElements().add(vertical);
+        p.getElements().add(arcdraw2);
+        p.getElements().add(horizontal);
+
+        return p;
+    }
 }
 
 class Obj1 extends Obstacle
 {
-    protected Image obj1 = new Image("file:///C:/Resources/Obj1.png");
-    protected ImageView imgvu = new ImageView(obj1);
+    protected Group g1;
+    Path ring1;
+    Path ring2;
+    Path ring3;
+    Path ring4;
 
-    Obj1()
+    Obj1(double centerY)
     {
-        imgvu.setTranslateX(75);
-        imgvu.setTranslateY(120);
-        imgvu.setFitHeight(300);
-        imgvu.setFitWidth(303);
-
-        getChildren().addAll(imgvu);
-        this.movement();
+        ring1 = arc1(centerY);
+        ring2 = arc2(centerY);
+        ring3 = arc3(centerY);
+        ring4 = arc4(centerY);
+        g1 = new Group(ring1,ring2,ring3,ring4);
+        getChildren().addAll(g1);
+        this.movement(g1);
     }
 
-    public void movement()
+    public void movement(Group g)
     {
-        RotateTransition rt = new RotateTransition(Duration.millis(30500),imgvu);
+        RotateTransition rt = new RotateTransition(Duration.millis(30500),g);
+        rt.setByAngle(3600);
+        rt.setCycleCount(Animation.INDEFINITE);
+
+        if (!rt.isAutoReverse()){
+            rt.play();
+        }
+    }
+}
+
+class Obj2 extends Obstacle
+{
+    protected Group g1;
+    Path ring1;
+    Path ring2;
+    Path ring3;
+    Path ring4;
+
+    Obj2(double centerY)
+    {
+        ring1 = rect1(centerY);
+        ring2 = rect2(centerY);
+        ring3 = rect3(centerY);
+        ring4 = rect4(centerY);
+        g1 = new Group(ring1,ring2,ring3,ring4);
+        getChildren().addAll(g1);
+        this.movement(g1);
+    }
+
+    public void movement(Group g)
+    {
+        RotateTransition rt = new RotateTransition(Duration.millis(30500),g);
         rt.setByAngle(3600);
         rt.setCycleCount(Animation.INDEFINITE);
 
@@ -134,17 +532,17 @@ class Star extends Parent
     protected Circle circle = new Circle();
     protected int passed = 0;
 
-    Star()
+    Star(double centerY)
     {
         s1.setTranslateX(205);
-        s1.setTranslateY(20);
+        s1.setTranslateY(centerY);
         s1.setFitHeight(40);
         s1.setFitWidth(40);
         s1.setEffect(new GaussianBlur(3));
 
         circle.setRadius(15);
         circle.setTranslateX(225);
-        circle.setTranslateY(40);
+        circle.setTranslateY(centerY+20);
         circle.setFill(Color.WHITE);
         circle.setVisible(false);
 
@@ -154,10 +552,10 @@ class Star extends Parent
 
     public void twinkle()
     {
-        FadeTransition ft = new FadeTransition(Duration.seconds(1),s1);
+        FadeTransition ft = new FadeTransition(Duration.millis(500),s1);
 
-//            ft.setFromValue(0);
-//            ft.setToValue(1);
+            ft.setFromValue(0);
+            ft.setToValue(1);
 
         ft.setAutoReverse(true);
         s1.setVisible(true);
@@ -180,19 +578,19 @@ class ColourSwitcher extends Colours
     protected Circle circle = new Circle();
     protected int switched = 0;
 
-    ColourSwitcher(Ball b)
+    ColourSwitcher(Ball b,double centerY)
     {
         randomColour(b);
 
         sw1.setTranslateX(205);
-        sw1.setTranslateY(550);
+        sw1.setTranslateY(centerY);
         sw1.setFitHeight(40);
         sw1.setFitWidth(40);
         movement();
 
         circle.setRadius(15);
         circle.setTranslateX(225);
-        circle.setTranslateY(570);
+        circle.setTranslateY(centerY+20);
         circle.setFill(Color.WHITE);
         circle.setVisible(false);
 
@@ -241,6 +639,7 @@ public class Main extends Application
     protected Timeline t2;
     protected Timeline t3;
     protected Timeline t4;
+    protected Timeline t5;
 
     protected int paused = 0;
 
@@ -251,6 +650,21 @@ public class Main extends Application
         private long savedscore2 = 0;
         private int rungame = 0;
         private int bonusgame = 0;
+        protected Ball ball;
+
+        public void CollisionFunc()
+        {
+            t1.pause();
+            t2.pause();
+            t4.pause();
+            if(ball.hitobstacle==0)
+            {
+                ball.hitobstacle = 1;
+                MissionFailed(1);
+                System.out.println("Hit Obstacle! Game Over!");
+                GameOver = 1;
+            }
+        }
 
         Game(Stage stage)
         {
@@ -265,16 +679,25 @@ public class Main extends Application
             ImageView imgvu = new ImageView(bgHS2);
             imgvu.setFitHeight(800);
             imgvu.setFitWidth(450);
-            Ball ball = new Ball(stage);
+
+            ball = new Ball(stage);
+            ColourSwitcher cs1 = new ColourSwitcher(ball,550);
+            Obj1 o1 = new Obj1(320);
+            Star s1 = new Star(300);
+            ColourSwitcher cs2 = new ColourSwitcher(ball,70);
+            Obj1 o2 = new Obj1(-180);
+            Star s2 = new Star(-200);
+            ColourSwitcher cs3 = new ColourSwitcher(ball,-460);
+            Obj2 o3 = new Obj2(-630);
+            Star s3 = new Star(-650);
+
             ball.hitgrnd = 0;
-            Obj1 o1 = new Obj1();
-            Star s1 = new Star();
+            ball.hitobstacle = 0;
             igmenu = new GameMenu(stage,2);
             scoreDisplay = new GameMenu(stage,3);
             igmenu.setVisible(true);
             scoreDisplay.setVisible(true);
-            ColourSwitcher cs1 = new ColourSwitcher(ball);
-            top.getChildren().addAll(imgvu,ball,o1,s1,cs1, igmenu, scoreDisplay);
+            top.getChildren().addAll(imgvu,ball,cs1,o1,s1,cs2,o2,s2,cs3,o3,s3,igmenu,scoreDisplay);
             int view;
             if ((view=4)<6)
             {
@@ -287,13 +710,50 @@ public class Main extends Application
                 @Override
                 public void handle(ActionEvent etl)
                 {
-                    o1.imgvu.setLayoutY(o1.imgvu.getLayoutY()+3);
+                    cs1.sw1.setLayoutY(cs1.sw1.getLayoutY()+3);
+                    cs1.circle.setLayoutY(cs1.circle.getLayoutY()+3);
+                    o1.g1.setLayoutY(o1.g1.getLayoutY()+3);
                     s1.circle.setLayoutY(s1.circle.getLayoutY()+3);
                     s1.s1.setLayoutY(s1.s1.getLayoutY()+3);
-                    cs1.sw1.setLayoutY(cs1.sw1.getLayoutY()+3);
+
+                    cs2.sw1.setLayoutY(cs2.sw1.getLayoutY()+3);
+                    cs2.circle.setLayoutY(cs2.circle.getLayoutY()+3);
+                    o2.g1.setLayoutY(o2.g1.getLayoutY()+3);
+                    s2.circle.setLayoutY(s2.circle.getLayoutY()+3);
+                    s2.s1.setLayoutY(s2.s1.getLayoutY()+3);
+
+                    cs3.sw1.setLayoutY(cs3.sw1.getLayoutY()+3);
+                    cs3.circle.setLayoutY(cs3.circle.getLayoutY()+3);
+                    o3.g1.setLayoutY(o3.g1.getLayoutY()+3);
+                    s3.circle.setLayoutY(s3.circle.getLayoutY()+3);
+                    s3.s1.setLayoutY(s3.s1.getLayoutY()+3);
                 }
             }));
             t4.setCycleCount(Timeline.INDEFINITE);
+            t5 = new Timeline(new KeyFrame(Duration.millis(20),new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent etl)
+                {
+                    cs1.sw1.setLayoutY(cs1.sw1.getLayoutY()+5);
+                    cs1.circle.setLayoutY(cs1.circle.getLayoutY()+5);
+                    o1.g1.setLayoutY(o1.g1.getLayoutY()+5);
+                    s1.circle.setLayoutY(s1.circle.getLayoutY()+5);
+                    s1.s1.setLayoutY(s1.s1.getLayoutY()+5);
+
+                    cs2.sw1.setLayoutY(cs2.sw1.getLayoutY()+5);
+                    cs2.circle.setLayoutY(cs2.circle.getLayoutY()+5);
+                    o2.g1.setLayoutY(o2.g1.getLayoutY()+5);
+                    s2.circle.setLayoutY(s2.circle.getLayoutY()+5);
+                    s2.s1.setLayoutY(s2.s1.getLayoutY()+5);
+
+                    cs3.sw1.setLayoutY(cs3.sw1.getLayoutY()+5);
+                    cs3.circle.setLayoutY(cs3.circle.getLayoutY()+5);
+                    o3.g1.setLayoutY(o3.g1.getLayoutY()+5);
+                    s3.circle.setLayoutY(s3.circle.getLayoutY()+5);
+                    s3.s1.setLayoutY(s3.s1.getLayoutY()+5);
+                }
+            }));
+            t5.setCycleCount(Timeline.INDEFINITE);
 
             // Ball Up
             t1 = new Timeline(new KeyFrame(Duration.millis(20),new EventHandler<ActionEvent>() {
@@ -301,8 +761,112 @@ public class Main extends Application
                 public void handle(ActionEvent etl)
                 {
                     ball.circle.setLayoutY(ball.circle.getLayoutY()-5);
-                    if(ball.circle.getLayoutY()<-300)
+                    if(ball.circle.getLayoutY()<-300 && ball.circle.getLayoutY()>-500)
                         t4.play();
+                    if(ball.circle.getLayoutY()<-500)
+                        t5.play();
+
+                    Shape sh3;
+                    sh3 = Shape.intersect(ball.circle,o1.ring1);
+                    Shape sh4;
+                    sh4 = Shape.intersect(ball.circle,o1.ring2);
+                    Shape sh5;
+                    sh5 = Shape.intersect(ball.circle,o1.ring3);
+                    Shape sh6;
+                    sh6 = Shape.intersect(ball.circle,o1.ring4);
+
+                    Shape sh7;
+                    sh7 = Shape.intersect(ball.circle,o2.ring1);
+                    Shape sh8;
+                    sh8 = Shape.intersect(ball.circle,o2.ring2);
+                    Shape sh9;
+                    sh9 = Shape.intersect(ball.circle,o2.ring3);
+                    Shape sh10;
+                    sh10 = Shape.intersect(ball.circle,o2.ring4);
+
+                    Shape sh11;
+                    sh11 = Shape.intersect(ball.circle,o3.ring1);
+                    Shape sh12;
+                    sh12 = Shape.intersect(ball.circle,o3.ring2);
+                    Shape sh13;
+                    sh13 = Shape.intersect(ball.circle,o3.ring3);
+                    Shape sh14;
+                    sh14 = Shape.intersect(ball.circle,o3.ring4);
+
+                    if(sh3.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DEEPPINK){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh4.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DEEPSKYBLUE){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh5.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DARKVIOLET){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh6.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.YELLOW){}
+                        else
+                        {CollisionFunc();}
+                    }
+
+                    else if(sh7.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DEEPPINK){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh8.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DEEPSKYBLUE){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh9.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DARKVIOLET){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh10.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.YELLOW){}
+                        else
+                        {CollisionFunc();}
+                    }
+
+                    else if(sh11.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DEEPPINK){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh12.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DEEPSKYBLUE){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh13.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DARKVIOLET){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh14.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.YELLOW){}
+                        else
+                        {CollisionFunc();}
+                    }
                 }
             }));
             t1.setCycleCount(Timeline.INDEFINITE);
@@ -313,7 +877,110 @@ public class Main extends Application
                 public void handle(ActionEvent etl)
                 {
                     t4.pause();
+                    t5.pause();
                     ball.circle.setLayoutY(ball.circle.getLayoutY()+6);
+
+                    Shape sh3;
+                    sh3 = Shape.intersect(ball.circle,o1.ring1);
+                    Shape sh4;
+                    sh4 = Shape.intersect(ball.circle,o1.ring2);
+                    Shape sh5;
+                    sh5 = Shape.intersect(ball.circle,o1.ring3);
+                    Shape sh6;
+                    sh6 = Shape.intersect(ball.circle,o1.ring4);
+
+                    Shape sh7;
+                    sh7 = Shape.intersect(ball.circle,o2.ring1);
+                    Shape sh8;
+                    sh8 = Shape.intersect(ball.circle,o2.ring2);
+                    Shape sh9;
+                    sh9 = Shape.intersect(ball.circle,o2.ring3);
+                    Shape sh10;
+                    sh10 = Shape.intersect(ball.circle,o2.ring4);
+
+                    Shape sh11;
+                    sh11 = Shape.intersect(ball.circle,o3.ring1);
+                    Shape sh12;
+                    sh12 = Shape.intersect(ball.circle,o3.ring2);
+                    Shape sh13;
+                    sh13 = Shape.intersect(ball.circle,o3.ring3);
+                    Shape sh14;
+                    sh14 = Shape.intersect(ball.circle,o3.ring4);
+
+                    if(sh3.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DEEPPINK){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh4.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DEEPSKYBLUE){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh5.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DARKVIOLET){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh6.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.YELLOW){}
+                        else
+                        {CollisionFunc();}
+                    }
+
+                    else if(sh7.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DEEPPINK){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh8.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DEEPSKYBLUE){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh9.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DARKVIOLET){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh10.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.YELLOW){}
+                        else
+                        {CollisionFunc();}
+                    }
+
+                    else if(sh11.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DEEPPINK){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh12.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DEEPSKYBLUE){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh13.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.DARKVIOLET){}
+                        else
+                        {CollisionFunc();}
+                    }
+                    else if(sh14.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(ball.circle.getFill()==Color.YELLOW){}
+                        else
+                        {CollisionFunc();}
+                    }
                 }
             }));
             t2.setCycleCount(Timeline.INDEFINITE);
@@ -324,11 +991,29 @@ public class Main extends Application
                 public void handle(ActionEvent etl)
                 {
                     Shape sh1;
-                    sh1 = Shape.intersect(ball.circle,s1.circle);
+                    sh1 = Shape.intersect(ball.circle,cs1.circle);
                     Shape sh2;
-                    sh2 = Shape.intersect(ball.circle,cs1.circle);
+                    sh2 = Shape.intersect(ball.circle,s1.circle);
+                    Shape sh3;
+                    sh3 = Shape.intersect(ball.circle,cs2.circle);
+                    Shape sh4;
+                    sh4 = Shape.intersect(ball.circle,s2.circle);
+                    Shape sh5;
+                    sh5 = Shape.intersect(ball.circle,cs3.circle);
+                    Shape sh6;
+                    sh6 = Shape.intersect(ball.circle,s3.circle);
 
                     if(sh1.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(cs1.switched==0)
+                        {   change(1);
+                            cs1.switched = 1;
+                            cs1.hide();
+                            ball.switchColour(cs1);
+                            System.out.println("Colour Changed!");
+                        }
+                    }
+                    else if(sh2.getLayoutBounds().getWidth()!=-1)
                     {
                         if(s1.passed==0)
                         {
@@ -341,17 +1026,54 @@ public class Main extends Application
                             s1.passed = 1;
                         }
                     }
-                    if(sh2.getLayoutBounds().getWidth()!=-1)
+                    else if(sh3.getLayoutBounds().getWidth()!=-1)
                     {
-                        if(cs1.switched==0)
+                        if(cs2.switched==0)
                         {   change(1);
-                            cs1.switched = 1;
-                            cs1.hide();
-                            ball.switchColour(cs1);
+                            cs2.switched = 1;
+                            cs2.hide();
+                            ball.switchColour(cs2);
                             System.out.println("Colour Changed!");
                         }
                     }
-                    if(ball.circle.getLayoutY()>100)
+                    else if(sh4.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(s2.passed==0)
+                        {
+                            yesyesyes(1);
+                            System.out.println("Score +1!");
+                            score++;
+                            String newscore = "SCORE : " + Long.toString(score);
+                            scoreDisplay.score.setText(newscore);
+                            s2.hide();
+                            s2.passed = 1;
+                        }
+                    }
+                    else if(sh5.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(cs3.switched==0)
+                        {   change(1);
+                            cs3.switched = 1;
+                            cs3.hide();
+                            ball.switchColour(cs3);
+                            System.out.println("Colour Changed!");
+                        }
+                    }
+                    else if(sh6.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(s3.passed==0)
+                        {
+                            yesyesyes(1);
+                            System.out.println("Score +1!");
+                            score++;
+                            String newscore = "SCORE : " + Long.toString(score);
+                            scoreDisplay.score.setText(newscore);
+                            s3.hide();
+                            s3.passed = 1;
+                        }
+                    }
+
+                    else if(ball.circle.getLayoutY()>100)
                     {
                         t1.pause();
                         t2.pause();
@@ -363,6 +1085,12 @@ public class Main extends Application
                             System.out.println("Hit Ground! Game Over!");
                             GameOver = 1;
                         }
+                    }
+                    else if(ball.hitobstacle==1)
+                    {
+                        t1.pause();
+                        t2.pause();
+                        t4.pause();
                     }
                 }
             }));
