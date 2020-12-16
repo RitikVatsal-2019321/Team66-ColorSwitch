@@ -10,6 +10,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
+import javafx.event.ActionEvent;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -19,11 +20,17 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
+import javafx.scene.shape.Circle;
 
 import java.sql.Struct;
 import java.util.Random;
@@ -53,36 +60,35 @@ class Colours extends Parent
 class Ball extends Colours
 {
     protected Circle circle = new Circle();
+    protected double xval = 225;
+    protected double yval = 700;
+    protected int hitgrnd = 0;
 
     Ball(Stage stage)
     {
         this.setColour(r.nextInt(4));
 
         circle.setRadius(15);
-        circle.setTranslateX(225);
-        circle.setTranslateY(700);
+        circle.setTranslateX(xval);
+        circle.setTranslateY(yval);
         circle.setFill(Color.WHITE);
 
         getChildren().addAll(circle);
-        this.jump();
     }
 
-    public void switchColour()
+    public void switchColour(ColourSwitcher cs)
     {
-
-    }
-    public void jump()
-    {
-        Path singJump =new Path();
-        singJump.getElements().addAll(new MoveTo(225,700), new CubicCurveTo(225, 630, 225, 630, 225, 630));
-        PathTransition singExec=new PathTransition();
-        singExec.setDuration(Duration.millis(700));
-        singExec.setPath(singJump);
-        singExec.setNode(circle);
-        singExec.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        singExec.setCycleCount(Timeline.INDEFINITE);
-        singExec.setAutoReverse(true);
-        singExec.play();
+        switch(cs.nextColour)
+        {
+            case 0: circle.setFill(Color.DEEPPINK);
+                    break;
+            case 1: circle.setFill(Color.DARKVIOLET);
+                    break;
+            case 2: circle.setFill(Color.DEEPSKYBLUE);
+                    break;
+            case 3: circle.setFill(Color.YELLOW);
+                    break;
+        }
     }
 }
 
@@ -125,6 +131,8 @@ class Star extends Parent
 {
     protected Image star1 = new Image("file:///C:/Resources/1.png");
     protected ImageView s1 = new ImageView(star1);
+    protected Circle circle = new Circle();
+    protected int passed = 0;
 
     Star()
     {
@@ -134,24 +142,33 @@ class Star extends Parent
         s1.setFitWidth(40);
         s1.setEffect(new GaussianBlur(3));
 
-        getChildren().addAll(s1);
+        circle.setRadius(15);
+        circle.setTranslateX(225);
+        circle.setTranslateY(40);
+        circle.setFill(Color.WHITE);
+        circle.setVisible(false);
+
+        getChildren().addAll(s1,circle);
         this.twinkle();
     }
 
-    public void twinkle(){
-
+    public void twinkle()
+    {
         FadeTransition ft = new FadeTransition(Duration.seconds(1),s1);
-
 
 //            ft.setFromValue(0);
 //            ft.setToValue(1);
-//
 
         ft.setAutoReverse(true);
         s1.setVisible(true);
         ft.setCycleCount(Timeline.INDEFINITE);
         ft.play();
+    }
 
+    public void hide()
+    {
+        getChildren().remove(s1);
+        getChildren().remove(circle);
     }
 }
 
@@ -160,6 +177,8 @@ class ColourSwitcher extends Colours
     protected int nextColour = -1;
     protected Image switcher1 = new Image("file:///C:/Resources/2.png");
     protected ImageView sw1 = new ImageView(switcher1);
+    protected Circle circle = new Circle();
+    protected int switched = 0;
 
     ColourSwitcher(Ball b)
     {
@@ -170,7 +189,14 @@ class ColourSwitcher extends Colours
         sw1.setFitHeight(40);
         sw1.setFitWidth(40);
         movement();
-        getChildren().addAll(sw1);
+
+        circle.setRadius(15);
+        circle.setTranslateX(225);
+        circle.setTranslateY(570);
+        circle.setFill(Color.WHITE);
+        circle.setVisible(false);
+
+        getChildren().addAll(sw1,circle);
     }
 
     protected void randomColour(Ball b)
@@ -191,9 +217,13 @@ class ColourSwitcher extends Colours
             rt.play();
         }
     }
+
+    public void hide()
+    {
+        getChildren().remove(sw1);
+        getChildren().remove(circle);
+    }
 }
-
-
 
 public class Main extends Application
 {
@@ -203,7 +233,6 @@ public class Main extends Application
     private GameMenu scoreDisplay;
     private GameMenu gameMenu;
     private GameMenu splash;
-
 
     class Game
     {
@@ -226,21 +255,116 @@ public class Main extends Application
             Obj1 o1 = new Obj1();
             Star s1 = new Star();
             igmenu = new GameMenu(stage,2);
-            scoreDisplay=new GameMenu(stage,3);
+            scoreDisplay = new GameMenu(stage,3);
             igmenu.setVisible(true);
             scoreDisplay.setVisible(true);
             ColourSwitcher cs1 = new ColourSwitcher(ball);
             top.getChildren().addAll(imgvu,ball,o1,s1,cs1, igmenu, scoreDisplay);
             int view;
-            if ((view=4)<6){
+            if ((view=4)<6)
+            {
                 stage.setScene(scene2);
                 stage.show();
             }
+
+            // Scrolling
+            Timeline t4 = new Timeline(new KeyFrame(Duration.millis(20),new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent etl)
+                {
+                    o1.imgvu.setLayoutY(o1.imgvu.getLayoutY()+3);
+                    s1.circle.setLayoutY(s1.circle.getLayoutY()+3);
+                    s1.s1.setLayoutY(s1.s1.getLayoutY()+3);
+                    cs1.sw1.setLayoutY(cs1.sw1.getLayoutY()+3);
+                }
+            }));
+            t4.setCycleCount(Timeline.INDEFINITE);
+
+            // Ball Up
+            Timeline t1 = new Timeline(new KeyFrame(Duration.millis(20),new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent etl)
+                {
+                    ball.circle.setLayoutY(ball.circle.getLayoutY()-5);
+                    if(ball.circle.getLayoutY()<-300)
+                        t4.play();
+                }
+            }));
+            t1.setCycleCount(Timeline.INDEFINITE);
+
+            // Ball Down
+            Timeline t2 = new Timeline(new KeyFrame(Duration.millis(20),new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent etl)
+                {
+                    t4.pause();
+                    ball.circle.setLayoutY(ball.circle.getLayoutY()+6);
+                }
+            }));
+            t2.setCycleCount(Timeline.INDEFINITE);
+
+            // Collision
+            Timeline t3 = new Timeline(new KeyFrame(Duration.millis(1),new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent etl)
+                {
+                    Shape sh1;
+                    sh1 = Shape.intersect(ball.circle,s1.circle);
+                    Shape sh2;
+                    sh2 = Shape.intersect(ball.circle,cs1.circle);
+
+                    if(sh1.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(s1.passed==0)
+                        {
+                            System.out.println("Score +1!");
+                            score++;
+                            String newscore = "SCORE : " + Long.toString(score);
+                            scoreDisplay.score.setText(newscore);
+                            s1.hide();
+                            s1.passed = 1;
+                        }
+                    }
+                    if(sh2.getLayoutBounds().getWidth()!=-1)
+                    {
+                        if(cs1.switched==0)
+                        {
+                            cs1.switched = 1;
+                            cs1.hide();
+                            ball.switchColour(cs1);
+                            System.out.println("Colour Changed!");
+                        }
+                    }
+                    if(ball.circle.getLayoutY()>100)
+                    {
+                        t1.pause();
+                        t2.pause();
+                        t4.pause();
+                        if(ball.hitgrnd==0)
+                        {
+                            ball.hitgrnd = 1;
+                            System.out.println("Hit Ground! Game Over!");
+                        }
+                    }
+                }
+            }));
+            t3.setCycleCount(Timeline.INDEFINITE);
+            t3.play();
+
+            scene2.setOnMousePressed(
+                    event -> {
+                        t2.pause();
+                        t1.play();
+                    }
+            );
+            scene2.setOnMouseReleased(
+                    event -> {
+                        t1.pause();
+                        t2.play();
+                    }
+            );
         }
     }
-
-
-
 
     public void BGmusic(int status) {
         Media bgMusic;
@@ -314,7 +438,6 @@ public class Main extends Application
 
         //END
 
-
         BGmusic(1);
         gameMenu = new GameMenu(stage,0);
         splash = new GameMenu(stage,1);
@@ -347,7 +470,9 @@ public class Main extends Application
 
     private class GameMenu extends Parent
     {
-        private final int obst=4;
+        private final int obst = 4;
+        public Text score;
+
         public GameMenu(Stage stage, int type)
         {
             if (type==0){
@@ -397,7 +522,7 @@ public class Main extends Application
 //                ft.setToValue(0);
 //                ft.setOnFinished(evt -> setVisible(false));
 //                ft.play();
-                new Game(stage);
+                    new Game(stage);
                 });
                 TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), menu0);
 
@@ -454,6 +579,7 @@ public class Main extends Application
                 }
                 menuButtons btnExit = new menuButtons("EXIT", 0,1);
                 btnExit.setOnMouseClicked(event -> {
+                    System.out.println("Exiting Game...");
                     System.exit(0);
                 });
 
@@ -480,13 +606,12 @@ public class Main extends Application
                 menuButtons starter = new menuButtons("PRESS ANY BUTTON",2,0);
                 int view;
                 if ((view=4)<6){
-                start.getChildren().addAll(starter);}
+                    start.getChildren().addAll(starter);}
                 getChildren().addAll(start);
             }
 
             else if (type==2){
                 VBox menu0 = new VBox(10);
-
 
                 VBox pausebtn = new VBox();
                 menu0.setTranslateX(100);
@@ -506,14 +631,12 @@ public class Main extends Application
 
                     FadeTransition ft = new FadeTransition(Duration.seconds(1),menu0);
 
-                        ft.setFromValue(0);
-                        ft.setToValue(1);
+                    ft.setFromValue(0);
+                    ft.setToValue(1);
                     bg.setOpacity(0.9);
                     bg.setVisible(true);
                     menu0.setVisible(true);
                     ft.play();
-
-
 
                 });
                 menuButtons musicCtrl = new menuButtons("TOGGLE MUSIC", 0,1);
@@ -531,6 +654,7 @@ public class Main extends Application
 
                 menuButtons btnExit = new menuButtons("EXIT", 0,1);
                 btnExit.setOnMouseClicked(event -> {
+                    System.out.println("Exiting Game...");
                     System.exit(0);
                 });
 
@@ -551,10 +675,12 @@ public class Main extends Application
                 VBox start = new VBox(10);
                 start.setTranslateX(6);
                 start.setTranslateY(10);
-                menuButtons starter = new menuButtons("SCORE : 3",2,0);
+                score = new Text("SCORE : 0");
+                score.setFill(Color.WHITE);
+                score.setFont(new Font(20));
                 int view;
                 if ((view=4)<6){
-                    start.getChildren().addAll(starter);}
+                    start.getChildren().addAll(score);}
                 getChildren().addAll(start);
             }
         }
