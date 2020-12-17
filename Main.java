@@ -666,12 +666,13 @@ public class Main extends Application
             }
         }
 
-        Game(Stage stage)
+        Game(Stage stage,int scorevalue)
         {
             System.out.println("New Game Started!");
 
             GameOver = 0;
             paused = 0;
+            score = scorevalue;
             Pane top = new Pane();
             top.setPrefSize(450, 800);
             Scene scene2 = new Scene(top);
@@ -697,6 +698,8 @@ public class Main extends Application
             scoreDisplay = new GameMenu(stage,3);
             igmenu.setVisible(true);
             scoreDisplay.setVisible(true);
+            String newscore = "SCORE : " + Long.toString(score);
+            scoreDisplay.score.setText(newscore);
             top.getChildren().addAll(imgvu,ball,cs1,o1,s1,cs2,o2,s2,cs3,o3,s3,igmenu,scoreDisplay);
             int view;
             if ((view=4)<6)
@@ -1279,7 +1282,7 @@ public class Main extends Application
                 btnnew.setOnMouseClicked(event -> {
 //
                     setVisible(false);
-                    new Game(stage);
+                    new Game(stage,0);
                 });
 
                 menuButtons musicCtrl = new menuButtons("MUSIC", 0,65);
@@ -1301,7 +1304,7 @@ public class Main extends Application
 //                ft.setToValue(0);
 //                ft.setOnFinished(evt -> setVisible(false));
 //                ft.play();
-                    new Game(stage);
+                    new Game(stage,0);
                 });
                 TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), menu0);
 
@@ -1326,8 +1329,8 @@ public class Main extends Application
                     });
                 });
 
-                menuButtons btnSound = null;
-                menuButtons btnVideo = null;
+                menuButtons btnSave1 = null;
+                menuButtons btnSave2 = null;
 
                 menuButtons btnBack = new menuButtons("< BACK", 0,1);
                 btnBack.setOnMouseClicked(event -> {
@@ -1352,18 +1355,26 @@ public class Main extends Application
 
                 if (vision>1) {
 
-                    btnSound = new menuButtons("SAVE1 : 2 PTS", 0, 1);
+                    btnSave1 = new menuButtons("SAVE1 : 2 PTS", 0, 1);
 
-                    btnVideo = new menuButtons("SAVE2 : 7 PTS", 0, 1);
+                    btnSave2 = new menuButtons("SAVE2 : 7 PTS", 0, 1);
                 }
                 menuButtons btnExit = new menuButtons("EXIT", 0,1);
                 btnExit.setOnMouseClicked(event -> {
                     System.out.println("Exiting Game...");
                     System.exit(0);
                 });
+                btnSave1.setOnMouseClicked(event -> {
+                    System.out.println("Loading Game...");
+                    new Game(stage,2);
+                });
+                btnSave2.setOnMouseClicked(event -> {
+                    System.out.println("Loading Game...");
+                    new Game(stage,7);
+                });
 
                 menu0.getChildren().addAll(btnnew, btnOptions, btnExit);
-                menu1.getChildren().addAll(btnBack, btnSound, btnVideo);
+                menu1.getChildren().addAll(btnBack, btnSave1, btnSave2);
                 menuPlay.getChildren().addAll(btnCircle);
                 music.getChildren().addAll(musicCtrl);
 
@@ -1403,7 +1414,7 @@ public class Main extends Application
 
                 menuButtons btnnew = new menuButtons("NEW GAME", 0,1);
                 btnnew.setOnMouseClicked(event -> {
-                    new Game(stage);
+                    new Game(stage,0);
                 });
 
                 menuButtons btnsave = new menuButtons("SAVE GAME", 0,1);
