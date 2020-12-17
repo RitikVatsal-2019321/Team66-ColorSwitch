@@ -1789,7 +1789,7 @@ public class Main extends Application
         Game(Stage stage,int scorevalue)
         {
             System.out.println("New Game Started!");
-
+            CurrScore=scorevalue;
             GameOver = 0;
             paused = 0;
             score = scorevalue;
