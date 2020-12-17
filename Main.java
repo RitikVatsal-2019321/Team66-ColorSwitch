@@ -96,7 +96,12 @@ class Ball extends Colours
     }
 }
 
-abstract class Obstacle extends Colours
+class ObstacleForSerial implements Serializable
+{
+    protected int data = 0;
+}
+
+abstract class Obstacle extends Colours implements Serializable
 {
     protected int objType = 0;
     protected Group g1;
@@ -1406,7 +1411,7 @@ abstract class Obstacle extends Colours
     }
 }
 
-class Obj1 extends Obstacle
+class Obj1 extends Obstacle implements Serializable
 {
     Obj1(double centerY)
     {
@@ -1424,7 +1429,7 @@ class Obj1 extends Obstacle
 
     public void movement(Group g)
     {
-        RotateTransition rt = new RotateTransition(Duration.millis(60000),g);
+        RotateTransition rt = new RotateTransition(Duration.millis(40000),g);
         rt.setByAngle(3600);
         rt.setCycleCount(Animation.INDEFINITE);
 
@@ -1434,7 +1439,7 @@ class Obj1 extends Obstacle
     }
 }
 
-class Obj2 extends Obstacle
+class Obj2 extends Obstacle implements Serializable
 {
     Obj2(double centerY)
     {
@@ -1452,7 +1457,7 @@ class Obj2 extends Obstacle
 
     public void movement(Group g)
     {
-        RotateTransition rt = new RotateTransition(Duration.millis(60000),g);
+        RotateTransition rt = new RotateTransition(Duration.millis(40000),g);
         rt.setByAngle(3600);
         rt.setCycleCount(Animation.INDEFINITE);
 
@@ -1462,7 +1467,7 @@ class Obj2 extends Obstacle
     }
 }
 
-class Obj3 extends Obstacle
+class Obj3 extends Obstacle implements Serializable
 {
     Obj3(double centerY)
     {
@@ -1480,7 +1485,7 @@ class Obj3 extends Obstacle
 
     public void movement(Group g)
     {
-        RotateTransition rt = new RotateTransition(Duration.millis(60000),g);
+        RotateTransition rt = new RotateTransition(Duration.millis(40000),g);
         rt.setByAngle(3600);
         rt.setCycleCount(Animation.INDEFINITE);
 
@@ -1490,7 +1495,7 @@ class Obj3 extends Obstacle
     }
 }
 
-class Obj4 extends Obstacle
+class Obj4 extends Obstacle implements Serializable
 {
     Obj4(double centerY)
     {
@@ -1508,7 +1513,7 @@ class Obj4 extends Obstacle
 
     public void movement(Group g)
     {
-        RotateTransition rt = new RotateTransition(Duration.millis(60000),g);
+        RotateTransition rt = new RotateTransition(Duration.millis(40000),g);
         rt.setByAngle(3600);
         rt.setCycleCount(Animation.INDEFINITE);
 
@@ -1518,7 +1523,7 @@ class Obj4 extends Obstacle
     }
 }
 
-class Obj5 extends Obstacle
+class Obj5 extends Obstacle implements Serializable
 {
     Obj5(double centerY)
     {
@@ -1536,7 +1541,7 @@ class Obj5 extends Obstacle
 
     public void movement(Group g)
     {
-        RotateTransition rt = new RotateTransition(Duration.millis(60000),g);
+        RotateTransition rt = new RotateTransition(Duration.millis(40000),g);
         rt.setByAngle(3600);
         rt.setCycleCount(Animation.INDEFINITE);
 
@@ -1546,7 +1551,7 @@ class Obj5 extends Obstacle
     }
 }
 
-class Obj6 extends Obstacle
+class Obj6 extends Obstacle implements Serializable
 {
     Obj6(double centerY)
     {
@@ -1564,7 +1569,7 @@ class Obj6 extends Obstacle
 
     public void movement(Group g)
     {
-        RotateTransition rt = new RotateTransition(Duration.millis(60000),g);
+        RotateTransition rt = new RotateTransition(Duration.millis(40000),g);
         rt.setByAngle(3600);
         rt.setCycleCount(Animation.INDEFINITE);
 
@@ -1574,7 +1579,7 @@ class Obj6 extends Obstacle
     }
 }
 
-class Obj7 extends Obstacle
+class Obj7 extends Obstacle implements Serializable
 {
     Obj7(double centerY)
     {
@@ -1592,7 +1597,7 @@ class Obj7 extends Obstacle
 
     public void movement(Group g)
     {
-        RotateTransition rt = new RotateTransition(Duration.millis(60000),g);
+        RotateTransition rt = new RotateTransition(Duration.millis(40000),g);
         rt.setByAngle(3600);
         rt.setCycleCount(Animation.INDEFINITE);
 
@@ -1602,7 +1607,7 @@ class Obj7 extends Obstacle
     }
 }
 
-class Obj8 extends Obstacle
+class Obj8 extends Obstacle implements Serializable
 {
     Obj8(double centerY)
     {
@@ -1620,7 +1625,7 @@ class Obj8 extends Obstacle
 
     public void movement(Group g)
     {
-        RotateTransition rt = new RotateTransition(Duration.millis(60000),g);
+        RotateTransition rt = new RotateTransition(Duration.millis(40000),g);
         rt.setByAngle(3600);
         rt.setCycleCount(Animation.INDEFINITE);
 
@@ -1732,6 +1737,7 @@ public class Main extends Application
 {
     int GameOver;
     public int CurrScore;
+    public int fixedscore;
     MediaPlayer mp;
     MediaPlayer ded;
     MediaPlayer pnt;
@@ -1786,14 +1792,15 @@ public class Main extends Application
             }
         }
 
-        Game(Stage stage,int scorevalue)
+        Game(Stage stage,int scorevalue,int dta)
         {
             System.out.println("New Game Started!");
             CurrScore=scorevalue;
+            fixedscore=scorevalue;
             GameOver = 0;
             paused = 0;
             score = scorevalue;
-            loop = 1;
+            loop = dta;
 
             Pane top = new Pane();
             top.setPrefSize(450, 800);
@@ -1809,16 +1816,110 @@ public class Main extends Application
             goover.setFitHeight(800);
             goover.setFitWidth(450);
 
-            ball = new Ball(stage);
-            cs1 = new ColourSwitcher(ball,550);
-            o1 = new Obj1(280);
-            s1 = new Star(260);
-            cs2 = new ColourSwitcher(ball,-1000);
-            o2 = new Obj2(-1000);
-            s2 = new Star(-1000);
-            cs3 = new ColourSwitcher(ball,-1000);
-            o3 = new Obj3(-1000);
-            s3 = new Star(-1000);
+            if(loop==1)
+            {
+                ball = new Ball(stage);
+                cs1 = new ColourSwitcher(ball,550);
+                o1 = new Obj1(280);
+                s1 = new Star(260);
+                cs2 = new ColourSwitcher(ball,-1000);
+                o2 = new Obj2(-1000);
+                s2 = new Star(-1000);
+                cs3 = new ColourSwitcher(ball,-1000);
+                o3 = new Obj3(-1000);
+                s3 = new Star(-1000);
+            }
+            else if(loop==2)
+            {
+                ball = new Ball(stage);
+                cs1 = new ColourSwitcher(ball,550);
+                o1 = new Obj2(280);
+                s1 = new Star(260);
+                cs2 = new ColourSwitcher(ball,-1000);
+                o2 = new Obj3(-1000);
+                s2 = new Star(-1000);
+                cs3 = new ColourSwitcher(ball,-1000);
+                o3 = new Obj4(-1000);
+                s3 = new Star(-1000);
+            }
+            else if(loop==3)
+            {
+                ball = new Ball(stage);
+                cs1 = new ColourSwitcher(ball,550);
+                o1 = new Obj3(280);
+                s1 = new Star(260);
+                cs2 = new ColourSwitcher(ball,-1000);
+                o2 = new Obj4(-1000);
+                s2 = new Star(-1000);
+                cs3 = new ColourSwitcher(ball,-1000);
+                o3 = new Obj5(-1000);
+                s3 = new Star(-1000);
+            }
+            else if(loop==4)
+            {
+                ball = new Ball(stage);
+                cs1 = new ColourSwitcher(ball,550);
+                o1 = new Obj4(280);
+                s1 = new Star(260);
+                cs2 = new ColourSwitcher(ball,-1000);
+                o2 = new Obj5(-1000);
+                s2 = new Star(-1000);
+                cs3 = new ColourSwitcher(ball,-1000);
+                o3 = new Obj6(-1000);
+                s3 = new Star(-1000);
+            }
+            else if(loop==5)
+            {
+                ball = new Ball(stage);
+                cs1 = new ColourSwitcher(ball,550);
+                o1 = new Obj5(280);
+                s1 = new Star(260);
+                cs2 = new ColourSwitcher(ball,-1000);
+                o2 = new Obj6(-1000);
+                s2 = new Star(-1000);
+                cs3 = new ColourSwitcher(ball,-1000);
+                o3 = new Obj7(-1000);
+                s3 = new Star(-1000);
+            }
+            else if(loop==6)
+            {
+                ball = new Ball(stage);
+                cs1 = new ColourSwitcher(ball,550);
+                o1 = new Obj6(280);
+                s1 = new Star(260);
+                cs2 = new ColourSwitcher(ball,-1000);
+                o2 = new Obj7(-1000);
+                s2 = new Star(-1000);
+                cs3 = new ColourSwitcher(ball,-1000);
+                o3 = new Obj8(-1000);
+                s3 = new Star(-1000);
+            }
+            else if(loop==7)
+            {
+                ball = new Ball(stage);
+                cs1 = new ColourSwitcher(ball,550);
+                o1 = new Obj7(280);
+                s1 = new Star(260);
+                cs2 = new ColourSwitcher(ball,-1000);
+                o2 = new Obj8(-1000);
+                s2 = new Star(-1000);
+                cs3 = new ColourSwitcher(ball,-1000);
+                o3 = new Obj1(-1000);
+                s3 = new Star(-1000);
+            }
+            else if(loop==8)
+            {
+                ball = new Ball(stage);
+                cs1 = new ColourSwitcher(ball,550);
+                o1 = new Obj8(280);
+                s1 = new Star(260);
+                cs2 = new ColourSwitcher(ball,-1000);
+                o2 = new Obj1(-1000);
+                s2 = new Star(-1000);
+                cs3 = new ColourSwitcher(ball,-1000);
+                o3 = new Obj2(-1000);
+                s3 = new Star(-1000);
+            }
 
             goover.setVisible(false);
             ball.hitgrnd = 0;
@@ -2159,6 +2260,7 @@ public class Main extends Application
                             System.out.println("Score +1!");
                             score++;
                             CurrScore=(int)score;
+                            fixedscore=(int)score;
                             String newscore = "SCORE : " + Long.toString(score);
                             scoreDisplay.score.setText(newscore);
                             s1.hide();
@@ -2183,6 +2285,7 @@ public class Main extends Application
                             System.out.println("Score +1!");
                             score++;
                             CurrScore=(int)score;
+                            fixedscore=(int)score;
                             String newscore = "SCORE : " + Long.toString(score);
                             scoreDisplay.score.setText(newscore);
                             s2.hide();
@@ -2207,6 +2310,7 @@ public class Main extends Application
                             System.out.println("Score +1!");
                             score++;
                             CurrScore=(int)score;
+                            fixedscore=(int)score;
                             String newscore = "SCORE : " + Long.toString(score);
                             scoreDisplay.score.setText(newscore);
                             s3.hide();
@@ -2448,6 +2552,7 @@ public class Main extends Application
         Media bgMusic;
         bgMusic = new Media("file:///C:/Resources/bg.mp3");
         mp =new MediaPlayer(bgMusic);
+        mp.setCycleCount(Timeline.INDEFINITE);
         if (status==1)mp.play();
         if (status==0)mp.pause();
 
@@ -2615,7 +2720,7 @@ public class Main extends Application
                 btnnew.setOnMouseClicked(event -> {
 //
                     setVisible(false);
-                    new Game(stage,0);
+                    new Game(stage,0,1);
                 });
 
                 menuButtons musicCtrl = new menuButtons("MUSIC", 0,65);
@@ -2637,7 +2742,7 @@ public class Main extends Application
 //                ft.setToValue(0);
 //                ft.setOnFinished(evt -> setVisible(false));
 //                ft.play();
-                    new Game(stage,0);
+                    new Game(stage,0,1);
                 });
                 TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), menu0);
 
@@ -2699,11 +2804,51 @@ public class Main extends Application
                 });
                 btnSave1.setOnMouseClicked(event -> {
                     System.out.println("Loading Game...");
-                    new Game(stage,sgames[0]);
+
+                    ObstacleForSerial objs = new ObstacleForSerial();
+                    try {
+                        FileInputStream f1 = new FileInputStream("C:/Resources/Save1Serial.txt");
+                        ObjectInputStream input1 = new ObjectInputStream(f1);
+                        objs = (ObstacleForSerial) input1.readObject();
+                        input1.close();
+                        f1.close();
+                    }
+                    catch (ClassNotFoundException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    int toSend = objs.data%8;
+                    toSend++;
+
+                    new Game(stage,sgames[0],toSend);
                 });
                 btnSave2.setOnMouseClicked(event -> {
                     System.out.println("Loading Game...");
-                    new Game(stage,sgames[1]);
+
+                    ObstacleForSerial objs = new ObstacleForSerial();
+                    try {
+                        FileInputStream f1 = new FileInputStream("C:/Resources/Save2Serial.txt");
+                        ObjectInputStream input1 = new ObjectInputStream(f1);
+                        objs = (ObstacleForSerial) input1.readObject();
+                        input1.close();
+                        f1.close();
+                    }
+                    catch (ClassNotFoundException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    int toSend = objs.data%8;
+                    toSend++;
+
+                    new Game(stage,sgames[1],toSend);
                 });
 
                 menu0.getChildren().addAll(btnnew, btnLoad, btnExit);
@@ -2748,14 +2893,14 @@ public class Main extends Application
 
                 menuButtons btnnew = new menuButtons("NEW GAME", 0,1);
                 btnnew.setOnMouseClicked(event -> {
-                    new Game(stage,0);
+                    new Game(stage,0,1);
                 });
 
                 menuButtons btnres = new menuButtons("RESURRECT", 0,1);
 
                 btnres.setOnMouseClicked(event -> {
                     if (CurrScore>=3){
-                        new Game(stage, CurrScore-3);
+                        new Game(stage, CurrScore-3,((fixedscore)%8)+1);
                     }
                     else {
                         System.out.println("--- NOT ENOUGH POINTS ---");
@@ -2770,14 +2915,39 @@ public class Main extends Application
                     sgames[0]=CurrScore;
                     File file = new File("C:/Resources/userSaves.ini");
 
-
                     try {
                         FileWriter fw = new FileWriter(file.getAbsoluteFile());
                         BufferedWriter bw = new BufferedWriter(fw);
                         bw.write(sgames[0] + "\n" + sgames[1]);
                         bw.close();
+
+                        //Copy 1 in 2 - DeSerialization + Serialization
+                        ObstacleForSerial objs = new ObstacleForSerial();
+                        FileInputStream f = new FileInputStream("C:/Resources/Save1Serial.txt");
+                        ObjectInputStream input = new ObjectInputStream(f);
+                        objs = (ObstacleForSerial) input.readObject();
+                        input.close();
+                        f.close();
+                        FileOutputStream f1 = new FileOutputStream("C:/Resources/Save2Serial.txt");
+                        ObjectOutputStream output1 = new ObjectOutputStream(f1);
+                        output1.writeObject(objs);
+                        output1.close();
+                        f1.close();
+
+                        //Serialization
+                        ObstacleForSerial obj = new ObstacleForSerial();
+                        obj.data = fixedscore;
+                        FileOutputStream f2 = new FileOutputStream("C:/Resources/Save1Serial.txt");
+                        ObjectOutputStream output = new ObjectOutputStream(f2);
+                        output.writeObject(obj);
+                        output.close();
+                        f2.close();
+                        System.out.println("Serialized!");
                     }
                     catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }
 
@@ -2836,11 +3006,55 @@ public class Main extends Application
                 btnSave2 = new menuButtons("SAVE2 : "+sgames[1]+" PTS", 0, 1);
                 btnSave1.setOnMouseClicked(event -> {
                     System.out.println("Loading Game...");
-                    new Game(stage,sgames[0]);
+
+                    ObstacleForSerial objs = new ObstacleForSerial();
+                    try {
+                        FileInputStream f1 = new FileInputStream("C:/Resources/Save1Serial.txt");
+                        ObjectInputStream input1 = new ObjectInputStream(f1);
+                        objs = (ObstacleForSerial) input1.readObject();
+                        input1.close();
+                        f1.close();
+                    }
+                    catch (FileNotFoundException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    catch (ClassNotFoundException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    int toSend = objs.data%8;
+                    toSend++;
+
+                    new Game(stage,sgames[0],toSend);
                 });
                 btnSave2.setOnMouseClicked(event -> {
                     System.out.println("Loading Game...");
-                    new Game(stage,sgames[1]);
+
+                    ObstacleForSerial objs = new ObstacleForSerial();
+                    try {
+                        FileInputStream f1 = new FileInputStream("C:/Resources/Save2Serial.txt");
+                        ObjectInputStream input1 = new ObjectInputStream(f1);
+                        objs = (ObstacleForSerial) input1.readObject();
+                        input1.close();
+                        f1.close();
+                    }
+                    catch (ClassNotFoundException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    int toSend = objs.data%8;
+                    toSend++;
+
+                    new Game(stage,sgames[1],toSend);
                 });
 
                 Rectangle bg = new Rectangle(450, 800);
