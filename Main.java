@@ -14,6 +14,8 @@ import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.event.ActionEvent;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -43,6 +45,7 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.Timer;
+import java.lang.*;
 
 class Colours extends Parent
 {
@@ -1743,12 +1746,13 @@ public class Main extends Application
     MediaPlayer pnt;
     MediaPlayer swch;
     MediaPlayer heet;
+    MediaPlayer revi;
     public static int[] sgames;
     private GameMenu igmenu;
     private GameMenu scoreDisplay;
     private GameMenu gameMenu;
     private GameMenu splash;
-
+    public int theme;
     protected Timeline t1;
     protected Timeline t2;
     protected Timeline t3;
@@ -1807,6 +1811,25 @@ public class Main extends Application
             Scene scene2 = new Scene(top);
 
             Image bgHS2 = new Image("file:///C:/Resources/hs2.png");
+            if (theme>0){
+                Random rand = new Random();
+                int clr=rand.nextInt(5);
+                if (clr==0){
+                    bgHS2 = new Image("file:///C:/Resources/clr/1.png");
+                }
+                else if (clr==1){
+                    bgHS2 = new Image("file:///C:/Resources/clr/2.png");
+                }
+                else if (clr==2){
+                    bgHS2 = new Image("file:///C:/Resources/clr/3.png");
+                }
+                else if (clr==3){
+                    bgHS2 = new Image("file:///C:/Resources/clr/4.png");
+                }
+                else {
+                    bgHS2 = new Image("file:///C:/Resources/clr/5.png");
+                }
+            }
             ImageView imgvu = new ImageView(bgHS2);
             imgvu.setFitHeight(800);
             imgvu.setFitWidth(450);
@@ -2590,6 +2613,14 @@ public class Main extends Application
         if (status==0)heet.pause();
     }
 
+    public void reve(int status) {
+        Media bgMusic;
+        bgMusic = new Media("file:///C:/Resources/rev.mp3");
+        revi =new MediaPlayer(bgMusic);
+        if (status==1)revi.play();
+        if (status==0)revi.pause();
+    }
+
 
 
     @Override
@@ -2654,7 +2685,7 @@ public class Main extends Application
         }
 
         //END
-
+        theme=-1;
         BGmusic(1);
         gameMenu = new GameMenu(stage,0);
         splash = new GameMenu(stage,1);
@@ -2732,6 +2763,19 @@ public class Main extends Application
                     }
                     else{
                         mp.setMute(true);
+                    }
+
+                });
+
+                menuButtons dsn = new menuButtons("THEME", 0,65);
+                dsn.setOnMouseClicked(event -> {
+
+
+                    if (theme>0){
+                        theme=-1;
+                    }
+                    else{
+                        theme=1;
                     }
 
                 });
@@ -2823,8 +2867,9 @@ public class Main extends Application
                     }
                     int toSend = objs.data%8;
                     toSend++;
-
+                    reve(1);
                     new Game(stage,sgames[0],toSend);
+
                 });
                 btnSave2.setOnMouseClicked(event -> {
                     System.out.println("Loading Game...");
@@ -2847,6 +2892,7 @@ public class Main extends Application
                     }
                     int toSend = objs.data%8;
                     toSend++;
+                    reve(1);
 
                     new Game(stage,sgames[1],toSend);
                 });
@@ -2854,7 +2900,7 @@ public class Main extends Application
                 menu0.getChildren().addAll(btnnew, btnLoad, btnExit);
                 menu1.getChildren().addAll(btnBack, btnSave1, btnSave2);
                 menuPlay.getChildren().addAll(btnCircle);
-                music.getChildren().addAll(musicCtrl);
+                music.getChildren().addAll(musicCtrl,dsn);
 
                 Rectangle bg = new Rectangle(450, 800);
                 bg.setFill(Color.GRAY);
@@ -2899,6 +2945,8 @@ public class Main extends Application
                 menuButtons btnres = new menuButtons("RESURRECT", 0,1);
 
                 btnres.setOnMouseClicked(event -> {
+                    reve(1);
+
                     if (CurrScore>=3){
                         new Game(stage, CurrScore-3,((fixedscore)%8)+1);
                     }
@@ -2906,7 +2954,6 @@ public class Main extends Application
                         System.out.println("--- NOT ENOUGH POINTS ---");
                     }
                 });
-
 
 
                 menuButtons btnsave = new menuButtons("SAVE", 0,65);
@@ -2949,6 +2996,18 @@ public class Main extends Application
                     }
                     catch (ClassNotFoundException e) {
                         e.printStackTrace();
+                    }
+
+                });
+                menuButtons dsn = new menuButtons("THEME", 0,65);
+                dsn.setOnMouseClicked(event -> {
+
+
+                    if (theme>0){
+                        theme=-1;
+                    }
+                    else{
+                        theme=1;
                     }
 
                 });
@@ -3029,6 +3088,7 @@ public class Main extends Application
                     }
                     int toSend = objs.data%8;
                     toSend++;
+                    reve(1);
 
                     new Game(stage,sgames[0],toSend);
                 });
@@ -3053,6 +3113,7 @@ public class Main extends Application
                     }
                     int toSend = objs.data%8;
                     toSend++;
+                    reve(1);
 
                     new Game(stage,sgames[1],toSend);
                 });
@@ -3113,7 +3174,7 @@ public class Main extends Application
                 });
 
                 menu0.getChildren().addAll(btnnew,btnres, btnLoad, musicCtrl,  btnExit);
-                pausebtn.getChildren().addAll(Pause, musicCtrl,btnsave);
+                pausebtn.getChildren().addAll(Pause, musicCtrl,btnsave,dsn);
                 menu1.getChildren().addAll(btnBack, btnSave1, btnSave2);
 
 
