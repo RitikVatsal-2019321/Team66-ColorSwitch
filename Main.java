@@ -2751,7 +2751,20 @@ public class Main extends Application
                     new Game(stage,0);
                 });
 
-                menuButtons btnsave = new menuButtons("SAVE GAME", 0,1);
+                menuButtons btnres = new menuButtons("RESURRECT", 0,1);
+
+                btnres.setOnMouseClicked(event -> {
+                    if (CurrScore>=3){
+                        new Game(stage, CurrScore-3);
+                    }
+                    else {
+                        System.out.println("--- NOT ENOUGH POINTS ---");
+                    }
+                });
+
+
+
+                menuButtons btnsave = new menuButtons("SAVE", 0,65);
                 btnsave.setOnMouseClicked(event -> {
                     sgames[1]=sgames[0];
                     sgames[0]=CurrScore;
@@ -2885,8 +2898,8 @@ public class Main extends Application
                     System.exit(0);
                 });
 
-                menu0.getChildren().addAll(btnnew,btnsave,btnLoad, musicCtrl,  btnExit);
-                pausebtn.getChildren().addAll(Pause, musicCtrl);
+                menu0.getChildren().addAll(btnnew,btnres, btnLoad, musicCtrl,  btnExit);
+                pausebtn.getChildren().addAll(Pause, musicCtrl,btnsave);
                 menu1.getChildren().addAll(btnBack, btnSave1, btnSave2);
 
 
