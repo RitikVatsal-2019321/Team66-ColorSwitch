@@ -1338,8 +1338,8 @@ public class Main extends Application
 
                 TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), menu1);
 
-                menuButtons btnOptions = new menuButtons("LOAD GAME", 0,1);
-                btnOptions.setOnMouseClicked(event -> {
+                menuButtons btnLoad = new menuButtons("LOAD GAME", 0,1);
+                btnLoad.setOnMouseClicked(event -> {
                     int view;
                     if ((view=4)<6){getChildren().add(menu1);}
 //                BGmusic(0);
@@ -1401,7 +1401,7 @@ public class Main extends Application
                     new Game(stage,sgames[1]);
                 });
 
-                menu0.getChildren().addAll(btnnew, btnOptions, btnExit);
+                menu0.getChildren().addAll(btnnew, btnLoad, btnExit);
                 menu1.getChildren().addAll(btnBack, btnSave1, btnSave2);
                 menuPlay.getChildren().addAll(btnCircle);
                 music.getChildren().addAll(musicCtrl);
@@ -1430,7 +1430,7 @@ public class Main extends Application
 
             else if (type==2){
                 VBox menu0 = new VBox(10);
-
+                VBox menu1 = new VBox(10);
                 VBox pausebtn = new VBox();
                 menu0.setTranslateX(100);
                 menu0.setTranslateY(630);
@@ -1438,7 +1438,8 @@ public class Main extends Application
                 menu0.setVisible(false);
                 pausebtn.setTranslateX(370);
                 pausebtn.setTranslateY(10);
-
+                menu1.setTranslateX(100);
+                menu1.setTranslateY(630);
 
                 menuButtons btnnew = new menuButtons("NEW GAME", 0,1);
                 btnnew.setOnMouseClicked(event -> {
@@ -1463,6 +1464,67 @@ public class Main extends Application
                     }
 
                 });
+                TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), menu0);
+
+                TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), menu1);
+
+                menuButtons btnLoad = new menuButtons("LOAD GAME", 0,1);
+                btnLoad.setOnMouseClicked(event -> {
+                    int view;
+                    if ((view=4)<6){getChildren().add(menu1);}
+//                BGmusic(0);
+                    tt.setToX(menu0.getTranslateX() - 400);
+
+                    tt.play();
+                    tt1.setToX(menu0.getTranslateX());
+
+
+
+                    tt1.play();
+                    int textSize=tt.getCycleCount();
+                    tt.setOnFinished(evt -> {
+                        if ((view)<6){ getChildren().remove(menu0);}
+                    });
+                });
+                menuButtons btnSave1 = null;
+                menuButtons btnSave2 = null;
+                TranslateTransition bb1 = new TranslateTransition(Duration.seconds(0.5), menu0);
+                TranslateTransition bb = new TranslateTransition(Duration.seconds(0.25), menu1);
+                menuButtons btnBack = new menuButtons("< BACK", 0,1);
+                btnBack.setOnMouseClicked(event -> {
+                    getChildren().add(menu0);
+
+                    bb.setToX(menu1.getTranslateX() + 400);
+                    bb.play();
+
+                    bb1.setToX(menu1.getTranslateX());
+
+
+                    bb1.play();
+                    int VisibleParamCheck;
+                    if (!isVisible()){VisibleParamCheck = 0;}
+                    else
+                    {VisibleParamCheck=1;}
+                    bb.setOnFinished(evt -> {
+                        getChildren().remove(menu1);
+                    });
+                });
+
+
+
+
+                    btnSave1 = new menuButtons("SAVE1 : "+sgames[0]+" PTS", 0, 1);
+
+                    btnSave2 = new menuButtons("SAVE1 : "+sgames[1]+" PTS", 0, 1);
+                btnSave1.setOnMouseClicked(event -> {
+                    System.out.println("Loading Game...");
+                    new Game(stage,sgames[0]);
+                });
+                btnSave2.setOnMouseClicked(event -> {
+                    System.out.println("Loading Game...");
+                    new Game(stage,sgames[1]);
+                });
+
                 Rectangle bg = new Rectangle(450, 800);
                 bg.setFill(Color.GRAY);
                 menuButtons Pause = new menuButtons("PAUSE", 0,65);
@@ -1499,7 +1561,7 @@ public class Main extends Application
                         t3.play();
                     }
                 });
-                menuButtons musicCtrl = new menuButtons("TOGGLE MUSIC", 0,1);
+                menuButtons musicCtrl = new menuButtons("MUSIC", 0,65);
                 musicCtrl.setOnMouseClicked(event -> {
 
 
@@ -1518,8 +1580,9 @@ public class Main extends Application
                     System.exit(0);
                 });
 
-                menu0.getChildren().addAll(btnnew,btnsave, musicCtrl,  btnExit);
-                pausebtn.getChildren().addAll(Pause);
+                menu0.getChildren().addAll(btnnew,btnsave,btnLoad, musicCtrl,  btnExit);
+                pausebtn.getChildren().addAll(Pause, musicCtrl);
+                menu1.getChildren().addAll(btnBack, btnSave1, btnSave2);
 
 
                 int VisibleParamCheck;
