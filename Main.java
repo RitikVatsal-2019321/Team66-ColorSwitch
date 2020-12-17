@@ -98,11 +98,18 @@ class Ball extends Colours
 
 abstract class Obstacle extends Colours
 {
-    protected int objType = -1;
+    protected int objType = 0;
+    protected Group g1;
+    protected Path ring1;
+    protected Path ring2;
+    protected Path ring3;
+    protected Path ring4;
+    protected double yy;
+    protected int creatednext = 0;
 
     public abstract void movement(Group g);
 
-    protected Path arc1(double centerY)
+    protected Path arc1( )
     {
         double centerX = 225;
         double rad = 140;
@@ -116,17 +123,17 @@ abstract class Obstacle extends Colours
 
         MoveTo mv = new MoveTo();
         mv.setX(centerX + innerrad);
-        mv.setY(centerY);
+        mv.setY( yy);
 
         ArcTo arcdraw1 = new ArcTo();
         arcdraw1.setRadiusX(innerrad);
         arcdraw1.setRadiusY(innerrad);
         arcdraw1.setX(centerX);
-        arcdraw1.setY(centerY - innerrad);
+        arcdraw1.setY( yy - innerrad);
 
         MoveTo moveTo2 = new MoveTo();
         moveTo2.setX(centerX + innerrad);
-        moveTo2.setY(centerY);
+        moveTo2.setY( yy);
 
         HLineTo horizontal = new HLineTo();
         horizontal.setX(centerX + rad);
@@ -135,10 +142,10 @@ abstract class Obstacle extends Colours
         arcdraw2.setRadiusX(rad);
         arcdraw2.setRadiusY(rad);
         arcdraw2.setX(centerX);
-        arcdraw2.setY(centerY - rad);
+        arcdraw2.setY( yy - rad);
 
         VLineTo vertical = new VLineTo();
-        vertical.setY(centerY - innerrad);
+        vertical.setY( yy - innerrad);
 
         p.getElements().add(mv);
         p.getElements().add(arcdraw1);
@@ -149,7 +156,7 @@ abstract class Obstacle extends Colours
 
         return p;
     }
-    protected Path arc2(double centerY)
+    protected Path arc2( )
     {
         double centerX = 225;
         double rad = 140;
@@ -163,26 +170,26 @@ abstract class Obstacle extends Colours
 
         MoveTo mv = new MoveTo();
         mv.setX(centerX);
-        mv.setY(centerY - innerrad);
+        mv.setY( yy - innerrad);
 
         ArcTo arcdraw1 = new ArcTo();
         arcdraw1.setRadiusX(innerrad);
         arcdraw1.setRadiusY(innerrad);
         arcdraw1.setX(centerX - innerrad);
-        arcdraw1.setY(centerY);
+        arcdraw1.setY( yy);
 
         MoveTo moveTo2 = new MoveTo();
         moveTo2.setX(centerX);
-        moveTo2.setY(centerY - innerrad);
+        moveTo2.setY( yy - innerrad);
 
         VLineTo vertical = new VLineTo();
-        vertical.setY(centerY - rad);
+        vertical.setY( yy - rad);
 
         ArcTo arcdraw2 = new ArcTo();
         arcdraw2.setRadiusX(rad);
         arcdraw2.setRadiusY(rad);
         arcdraw2.setX(centerX - rad);
-        arcdraw2.setY(centerY);
+        arcdraw2.setY( yy);
 
         HLineTo horizontal = new HLineTo();
         horizontal.setX(centerX - innerrad);
@@ -196,7 +203,7 @@ abstract class Obstacle extends Colours
 
         return p;
     }
-    protected Path arc3(double centerY)
+    protected Path arc3( )
     {
         double centerX = 225;
         double rad = 140;
@@ -210,17 +217,17 @@ abstract class Obstacle extends Colours
 
         MoveTo mv = new MoveTo();
         mv.setX(centerX - innerrad);
-        mv.setY(centerY);
+        mv.setY( yy);
 
         ArcTo arcdraw1 = new ArcTo();
         arcdraw1.setRadiusX(innerrad);
         arcdraw1.setRadiusY(innerrad);
         arcdraw1.setX(centerX);
-        arcdraw1.setY(centerY + innerrad);
+        arcdraw1.setY( yy + innerrad);
 
         MoveTo moveTo2 = new MoveTo();
         moveTo2.setX(centerX - innerrad);
-        moveTo2.setY(centerY);
+        moveTo2.setY( yy);
 
         HLineTo horizontal = new HLineTo();
         horizontal.setX(centerX - rad);
@@ -229,10 +236,10 @@ abstract class Obstacle extends Colours
         arcdraw2.setRadiusX(rad);
         arcdraw2.setRadiusY(rad);
         arcdraw2.setX(centerX);
-        arcdraw2.setY(centerY + rad);
+        arcdraw2.setY( yy + rad);
 
         VLineTo vertical = new VLineTo();
-        vertical.setY(centerY + innerrad);
+        vertical.setY( yy + innerrad);
 
         p.getElements().add(mv);
         p.getElements().add(arcdraw1);
@@ -243,7 +250,7 @@ abstract class Obstacle extends Colours
 
         return p;
     }
-    protected Path arc4(double centerY)
+    protected Path arc4( )
     {
         double centerX = 225;
         double rad = 140;
@@ -257,26 +264,26 @@ abstract class Obstacle extends Colours
 
         MoveTo mv = new MoveTo();
         mv.setX(centerX);
-        mv.setY(centerY + innerrad);
+        mv.setY( yy + innerrad);
 
         ArcTo arcdraw1 = new ArcTo();
         arcdraw1.setRadiusX(innerrad);
         arcdraw1.setRadiusY(innerrad);
         arcdraw1.setX(centerX + innerrad);
-        arcdraw1.setY(centerY);
+        arcdraw1.setY( yy);
 
         MoveTo moveTo2 = new MoveTo();
         moveTo2.setX(centerX);
-        moveTo2.setY(centerY + innerrad);
+        moveTo2.setY( yy + innerrad);
 
         VLineTo vertical = new VLineTo();
-        vertical.setY(centerY + rad);
+        vertical.setY( yy + rad);
 
         ArcTo arcdraw2 = new ArcTo();
         arcdraw2.setRadiusX(rad);
         arcdraw2.setRadiusY(rad);
         arcdraw2.setX(centerX + rad);
-        arcdraw2.setY(centerY);
+        arcdraw2.setY( yy);
 
         HLineTo horizontal = new HLineTo();
         horizontal.setX(centerX + innerrad);
@@ -291,7 +298,7 @@ abstract class Obstacle extends Colours
         return p;
     }
 
-    protected Path rect1(double centerY)
+    protected Path arc12( )
     {
         double centerX = 225;
         double rad = 140;
@@ -305,25 +312,29 @@ abstract class Obstacle extends Colours
 
         MoveTo mv = new MoveTo();
         mv.setX(centerX + innerrad);
-        mv.setY(centerY);
+        mv.setY( yy-50);
 
-        LineTo arcdraw1 = new LineTo();
-        arcdraw1.setX(centerX);
-        arcdraw1.setY(centerY - innerrad);
+        ArcTo arcdraw1 = new ArcTo();
+        arcdraw1.setRadiusX(innerrad);
+        arcdraw1.setRadiusY(innerrad);
+        arcdraw1.setX(centerX+50);
+        arcdraw1.setY( yy - innerrad);
 
         MoveTo moveTo2 = new MoveTo();
         moveTo2.setX(centerX + innerrad);
-        moveTo2.setY(centerY);
+        moveTo2.setY( yy-50);
 
         HLineTo horizontal = new HLineTo();
         horizontal.setX(centerX + rad);
 
-        LineTo arcdraw2 = new LineTo();
-        arcdraw2.setX(centerX);
-        arcdraw2.setY(centerY - rad);
+        ArcTo arcdraw2 = new ArcTo();
+        arcdraw2.setRadiusX(rad);
+        arcdraw2.setRadiusY(rad);
+        arcdraw2.setX(centerX+50);
+        arcdraw2.setY( yy - rad);
 
         VLineTo vertical = new VLineTo();
-        vertical.setY(centerY - innerrad);
+        vertical.setY( yy - innerrad);
 
         p.getElements().add(mv);
         p.getElements().add(arcdraw1);
@@ -334,7 +345,7 @@ abstract class Obstacle extends Colours
 
         return p;
     }
-    protected Path rect2(double centerY)
+    protected Path arc22( )
     {
         double centerX = 225;
         double rad = 140;
@@ -347,23 +358,27 @@ abstract class Obstacle extends Colours
         p.setStroke(bg);
 
         MoveTo mv = new MoveTo();
-        mv.setX(centerX);
-        mv.setY(centerY - innerrad);
+        mv.setX(centerX-50);
+        mv.setY( yy - innerrad);
 
-        LineTo arcdraw1 = new LineTo();
+        ArcTo arcdraw1 = new ArcTo();
+        arcdraw1.setRadiusX(innerrad);
+        arcdraw1.setRadiusY(innerrad);
         arcdraw1.setX(centerX - innerrad);
-        arcdraw1.setY(centerY);
+        arcdraw1.setY( yy-50);
 
         MoveTo moveTo2 = new MoveTo();
-        moveTo2.setX(centerX);
-        moveTo2.setY(centerY - innerrad);
+        moveTo2.setX(centerX-50);
+        moveTo2.setY( yy - innerrad);
 
         VLineTo vertical = new VLineTo();
-        vertical.setY(centerY - rad);
+        vertical.setY( yy - rad);
 
-        LineTo arcdraw2 = new LineTo();
+        ArcTo arcdraw2 = new ArcTo();
+        arcdraw2.setRadiusX(rad);
+        arcdraw2.setRadiusY(rad);
         arcdraw2.setX(centerX - rad);
-        arcdraw2.setY(centerY);
+        arcdraw2.setY( yy-50);
 
         HLineTo horizontal = new HLineTo();
         horizontal.setX(centerX - innerrad);
@@ -377,7 +392,7 @@ abstract class Obstacle extends Colours
 
         return p;
     }
-    protected Path rect3(double centerY)
+    protected Path arc32( )
     {
         double centerX = 225;
         double rad = 140;
@@ -391,25 +406,29 @@ abstract class Obstacle extends Colours
 
         MoveTo mv = new MoveTo();
         mv.setX(centerX - innerrad);
-        mv.setY(centerY);
+        mv.setY( yy+50);
 
-        LineTo arcdraw1 = new LineTo();
-        arcdraw1.setX(centerX);
-        arcdraw1.setY(centerY + innerrad);
+        ArcTo arcdraw1 = new ArcTo();
+        arcdraw1.setRadiusX(innerrad);
+        arcdraw1.setRadiusY(innerrad);
+        arcdraw1.setX(centerX-50);
+        arcdraw1.setY( yy + innerrad);
 
         MoveTo moveTo2 = new MoveTo();
         moveTo2.setX(centerX - innerrad);
-        moveTo2.setY(centerY);
+        moveTo2.setY( yy+50);
 
         HLineTo horizontal = new HLineTo();
         horizontal.setX(centerX - rad);
 
-        LineTo arcdraw2 = new LineTo();
-        arcdraw2.setX(centerX);
-        arcdraw2.setY(centerY + rad);
+        ArcTo arcdraw2 = new ArcTo();
+        arcdraw2.setRadiusX(rad);
+        arcdraw2.setRadiusY(rad);
+        arcdraw2.setX(centerX-50);
+        arcdraw2.setY( yy + rad);
 
         VLineTo vertical = new VLineTo();
-        vertical.setY(centerY + innerrad);
+        vertical.setY( yy + innerrad);
 
         p.getElements().add(mv);
         p.getElements().add(arcdraw1);
@@ -420,7 +439,184 @@ abstract class Obstacle extends Colours
 
         return p;
     }
-    protected Path rect4(double centerY)
+    protected Path arc42( )
+    {
+        double centerX = 225;
+        double rad = 140;
+        double innerrad = 120;
+        Color bg = Color.YELLOW;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX+50);
+        mv.setY( yy + innerrad);
+
+        ArcTo arcdraw1 = new ArcTo();
+        arcdraw1.setRadiusX(innerrad);
+        arcdraw1.setRadiusY(innerrad);
+        arcdraw1.setX(centerX + innerrad);
+        arcdraw1.setY( yy+50);
+
+        MoveTo moveTo2 = new MoveTo();
+        moveTo2.setX(centerX+50);
+        moveTo2.setY( yy + innerrad);
+
+        VLineTo vertical = new VLineTo();
+        vertical.setY( yy + rad);
+
+        ArcTo arcdraw2 = new ArcTo();
+        arcdraw2.setRadiusX(rad);
+        arcdraw2.setRadiusY(rad);
+        arcdraw2.setX(centerX + rad);
+        arcdraw2.setY( yy+50);
+
+        HLineTo horizontal = new HLineTo();
+        horizontal.setX(centerX + innerrad);
+
+        p.getElements().add(mv);
+        p.getElements().add(arcdraw1);
+        p.getElements().add(moveTo2);
+        p.getElements().add(vertical);
+        p.getElements().add(arcdraw2);
+        p.getElements().add(horizontal);
+
+        return p;
+    }
+
+    protected Path rect1( )
+    {
+        double centerX = 225;
+        double rad = 140;
+        double innerrad = 120;
+        Color bg = Color.DEEPPINK;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX + innerrad);
+        mv.setY( yy);
+
+        LineTo arcdraw1 = new LineTo();
+        arcdraw1.setX(centerX);
+        arcdraw1.setY( yy - innerrad);
+
+        MoveTo moveTo2 = new MoveTo();
+        moveTo2.setX(centerX + innerrad);
+        moveTo2.setY( yy);
+
+        HLineTo horizontal = new HLineTo();
+        horizontal.setX(centerX + rad);
+
+        LineTo arcdraw2 = new LineTo();
+        arcdraw2.setX(centerX);
+        arcdraw2.setY( yy - rad);
+
+        VLineTo vertical = new VLineTo();
+        vertical.setY( yy - innerrad);
+
+        p.getElements().add(mv);
+        p.getElements().add(arcdraw1);
+        p.getElements().add(moveTo2);
+        p.getElements().add(horizontal);
+        p.getElements().add(arcdraw2);
+        p.getElements().add(vertical);
+
+        return p;
+    }
+    protected Path rect2( )
+    {
+        double centerX = 225;
+        double rad = 140;
+        double innerrad = 120;
+        Color bg = Color.DEEPSKYBLUE;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX);
+        mv.setY( yy - innerrad);
+
+        LineTo arcdraw1 = new LineTo();
+        arcdraw1.setX(centerX - innerrad);
+        arcdraw1.setY( yy);
+
+        MoveTo moveTo2 = new MoveTo();
+        moveTo2.setX(centerX);
+        moveTo2.setY( yy - innerrad);
+
+        VLineTo vertical = new VLineTo();
+        vertical.setY( yy - rad);
+
+        LineTo arcdraw2 = new LineTo();
+        arcdraw2.setX(centerX - rad);
+        arcdraw2.setY( yy);
+
+        HLineTo horizontal = new HLineTo();
+        horizontal.setX(centerX - innerrad);
+
+        p.getElements().add(mv);
+        p.getElements().add(arcdraw1);
+        p.getElements().add(moveTo2);
+        p.getElements().add(vertical);
+        p.getElements().add(arcdraw2);
+        p.getElements().add(horizontal);
+
+        return p;
+    }
+    protected Path rect3( )
+    {
+        double centerX = 225;
+        double rad = 140;
+        double innerrad = 120;
+        Color bg = Color.DARKVIOLET;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX - innerrad);
+        mv.setY( yy);
+
+        LineTo arcdraw1 = new LineTo();
+        arcdraw1.setX(centerX);
+        arcdraw1.setY( yy + innerrad);
+
+        MoveTo moveTo2 = new MoveTo();
+        moveTo2.setX(centerX - innerrad);
+        moveTo2.setY( yy);
+
+        HLineTo horizontal = new HLineTo();
+        horizontal.setX(centerX - rad);
+
+        LineTo arcdraw2 = new LineTo();
+        arcdraw2.setX(centerX);
+        arcdraw2.setY( yy + rad);
+
+        VLineTo vertical = new VLineTo();
+        vertical.setY( yy + innerrad);
+
+        p.getElements().add(mv);
+        p.getElements().add(arcdraw1);
+        p.getElements().add(moveTo2);
+        p.getElements().add(horizontal);
+        p.getElements().add(arcdraw2);
+        p.getElements().add(vertical);
+
+        return p;
+    }
+    protected Path rect4( )
     {
         double centerX = 225;
         double rad = 140;
@@ -434,22 +630,22 @@ abstract class Obstacle extends Colours
 
         MoveTo mv = new MoveTo();
         mv.setX(centerX);
-        mv.setY(centerY + innerrad);
+        mv.setY( yy + innerrad);
 
         LineTo arcdraw1 = new LineTo();
         arcdraw1.setX(centerX + innerrad);
-        arcdraw1.setY(centerY);
+        arcdraw1.setY( yy);
 
         MoveTo moveTo2 = new MoveTo();
         moveTo2.setX(centerX);
-        moveTo2.setY(centerY + innerrad);
+        moveTo2.setY( yy + innerrad);
 
         VLineTo vertical = new VLineTo();
-        vertical.setY(centerY + rad);
+        vertical.setY( yy + rad);
 
         LineTo arcdraw2 = new LineTo();
         arcdraw2.setX(centerX + rad);
-        arcdraw2.setY(centerY);
+        arcdraw2.setY( yy);
 
         HLineTo horizontal = new HLineTo();
         horizontal.setX(centerX + innerrad);
@@ -460,6 +656,751 @@ abstract class Obstacle extends Colours
         p.getElements().add(vertical);
         p.getElements().add(arcdraw2);
         p.getElements().add(horizontal);
+
+        return p;
+    }
+
+    protected Path rect12( )
+    {
+        double centerX = 225;
+        double rad = 140;
+        double innerrad = 120;
+        Color bg = Color.DEEPPINK;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX + innerrad);
+        mv.setY( yy-50);
+
+        LineTo arcdraw1 = new LineTo();
+        arcdraw1.setX(centerX+50);
+        arcdraw1.setY( yy - innerrad);
+
+        MoveTo moveTo2 = new MoveTo();
+        moveTo2.setX(centerX + innerrad);
+        moveTo2.setY( yy-50);
+
+        HLineTo horizontal = new HLineTo();
+        horizontal.setX(centerX + rad);
+
+        LineTo arcdraw2 = new LineTo();
+        arcdraw2.setX(centerX+50);
+        arcdraw2.setY( yy - rad);
+
+        VLineTo vertical = new VLineTo();
+        vertical.setY( yy - innerrad);
+
+        p.getElements().add(mv);
+        p.getElements().add(arcdraw1);
+        p.getElements().add(moveTo2);
+        p.getElements().add(horizontal);
+        p.getElements().add(arcdraw2);
+        p.getElements().add(vertical);
+
+        return p;
+    }
+    protected Path rect22( )
+    {
+        double centerX = 225;
+        double rad = 140;
+        double innerrad = 120;
+        Color bg = Color.DEEPSKYBLUE;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX-50);
+        mv.setY( yy - innerrad);
+
+        LineTo arcdraw1 = new LineTo();
+        arcdraw1.setX(centerX - innerrad);
+        arcdraw1.setY( yy-50);
+
+        MoveTo moveTo2 = new MoveTo();
+        moveTo2.setX(centerX-50);
+        moveTo2.setY( yy - innerrad);
+
+        VLineTo vertical = new VLineTo();
+        vertical.setY( yy - rad);
+
+        LineTo arcdraw2 = new LineTo();
+        arcdraw2.setX(centerX - rad);
+        arcdraw2.setY( yy-50);
+
+        HLineTo horizontal = new HLineTo();
+        horizontal.setX(centerX - innerrad);
+
+        p.getElements().add(mv);
+        p.getElements().add(arcdraw1);
+        p.getElements().add(moveTo2);
+        p.getElements().add(vertical);
+        p.getElements().add(arcdraw2);
+        p.getElements().add(horizontal);
+
+        return p;
+    }
+    protected Path rect32( )
+    {
+        double centerX = 225;
+        double rad = 140;
+        double innerrad = 120;
+        Color bg = Color.DARKVIOLET;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX - innerrad);
+        mv.setY( yy+50);
+
+        LineTo arcdraw1 = new LineTo();
+        arcdraw1.setX(centerX-50);
+        arcdraw1.setY( yy + innerrad);
+
+        MoveTo moveTo2 = new MoveTo();
+        moveTo2.setX(centerX - innerrad);
+        moveTo2.setY( yy+50);
+
+        HLineTo horizontal = new HLineTo();
+        horizontal.setX(centerX - rad);
+
+        LineTo arcdraw2 = new LineTo();
+        arcdraw2.setX(centerX-50);
+        arcdraw2.setY( yy + rad);
+
+        VLineTo vertical = new VLineTo();
+        vertical.setY( yy + innerrad);
+
+        p.getElements().add(mv);
+        p.getElements().add(arcdraw1);
+        p.getElements().add(moveTo2);
+        p.getElements().add(horizontal);
+        p.getElements().add(arcdraw2);
+        p.getElements().add(vertical);
+
+        return p;
+    }
+    protected Path rect42( )
+    {
+        double centerX = 225;
+        double rad = 140;
+        double innerrad = 120;
+        Color bg = Color.YELLOW;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX+50);
+        mv.setY( yy + innerrad);
+
+        LineTo arcdraw1 = new LineTo();
+        arcdraw1.setX(centerX + innerrad);
+        arcdraw1.setY( yy+50);
+
+        MoveTo moveTo2 = new MoveTo();
+        moveTo2.setX(centerX+50);
+        moveTo2.setY( yy + innerrad);
+
+        VLineTo vertical = new VLineTo();
+        vertical.setY( yy + rad);
+
+        LineTo arcdraw2 = new LineTo();
+        arcdraw2.setX(centerX + rad);
+        arcdraw2.setY( yy+50);
+
+        HLineTo horizontal = new HLineTo();
+        horizontal.setX(centerX + innerrad);
+
+        p.getElements().add(mv);
+        p.getElements().add(arcdraw1);
+        p.getElements().add(moveTo2);
+        p.getElements().add(vertical);
+        p.getElements().add(arcdraw2);
+        p.getElements().add(horizontal);
+
+        return p;
+    }
+
+    protected Path hand1( )
+    {
+        double centerX = 225;
+        Color bg = Color.DEEPPINK;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX+70);
+        mv.setY( yy-60);
+
+        LineTo mv1 = new LineTo();
+        mv1.setX(centerX+150);
+        mv1.setY( yy-140);
+
+        LineTo mv2 = new LineTo();
+        mv2.setX(centerX+140);
+        mv2.setY( yy-150);
+
+        LineTo mv3 = new LineTo();
+        mv3.setX(centerX+60);
+        mv3.setY( yy-70);
+
+        LineTo mv4 = new LineTo();
+        mv4.setX(centerX+70);
+        mv4.setY( yy-60);
+
+        p.getElements().add(mv);
+        p.getElements().add(mv1);
+        p.getElements().add(mv2);
+        p.getElements().add(mv3);
+        p.getElements().add(mv4);
+
+        return p;
+    }
+    protected Path hand2( )
+    {
+        double centerX = 225;
+        Color bg = Color.DEEPSKYBLUE;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX-70);
+        mv.setY( yy-60);
+
+        LineTo mv1 = new LineTo();
+        mv1.setX(centerX-150);
+        mv1.setY( yy-140);
+
+        LineTo mv2 = new LineTo();
+        mv2.setX(centerX-140);
+        mv2.setY( yy-150);
+
+        LineTo mv3 = new LineTo();
+        mv3.setX(centerX-60);
+        mv3.setY( yy-70);
+
+        LineTo mv4 = new LineTo();
+        mv4.setX(centerX-70);
+        mv4.setY( yy-60);
+
+        p.getElements().add(mv);
+        p.getElements().add(mv1);
+        p.getElements().add(mv2);
+        p.getElements().add(mv3);
+        p.getElements().add(mv4);
+
+        return p;
+    }
+    protected Path hand3( )
+    {
+        double centerX = 225;
+        Color bg = Color.DARKVIOLET;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX-70);
+        mv.setY( yy+60);
+
+        LineTo mv1 = new LineTo();
+        mv1.setX(centerX-150);
+        mv1.setY( yy+140);
+
+        LineTo mv2 = new LineTo();
+        mv2.setX(centerX-140);
+        mv2.setY( yy+150);
+
+        LineTo mv3 = new LineTo();
+        mv3.setX(centerX-60);
+        mv3.setY( yy+70);
+
+        LineTo mv4 = new LineTo();
+        mv4.setX(centerX-70);
+        mv4.setY( yy+60);
+
+        p.getElements().add(mv);
+        p.getElements().add(mv1);
+        p.getElements().add(mv2);
+        p.getElements().add(mv3);
+        p.getElements().add(mv4);
+
+        return p;
+    }
+    protected Path hand4( )
+    {
+        double centerX = 225;
+        Color bg = Color.YELLOW;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX+70);
+        mv.setY( yy+60);
+
+        LineTo mv1 = new LineTo();
+        mv1.setX(centerX+150);
+        mv1.setY( yy+140);
+
+        LineTo mv2 = new LineTo();
+        mv2.setX(centerX+140);
+        mv2.setY( yy+150);
+
+        LineTo mv3 = new LineTo();
+        mv3.setX(centerX+60);
+        mv3.setY( yy+70);
+
+        LineTo mv4 = new LineTo();
+        mv4.setX(centerX+70);
+        mv4.setY( yy+60);
+
+        p.getElements().add(mv);
+        p.getElements().add(mv1);
+        p.getElements().add(mv2);
+        p.getElements().add(mv3);
+        p.getElements().add(mv4);
+
+        return p;
+    }
+
+    protected Path hand12( )
+    {
+        double centerX = 325;
+        Color bg = Color.DEEPPINK;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX+20);
+        mv.setY( yy-10);
+
+        LineTo mv1 = new LineTo();
+        mv1.setX(centerX+150);
+        mv1.setY( yy-140);
+
+        LineTo mv2 = new LineTo();
+        mv2.setX(centerX+140);
+        mv2.setY( yy-150);
+
+        LineTo mv3 = new LineTo();
+        mv3.setX(centerX+10);
+        mv3.setY( yy-20);
+
+        LineTo mv4 = new LineTo();
+        mv4.setX(centerX+20);
+        mv4.setY( yy-10);
+
+        p.getElements().add(mv);
+        p.getElements().add(mv1);
+        p.getElements().add(mv2);
+        p.getElements().add(mv3);
+        p.getElements().add(mv4);
+
+        return p;
+    }
+    protected Path hand22( )
+    {
+        double centerX = 325;
+        Color bg = Color.DEEPSKYBLUE;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX-20);
+        mv.setY( yy-10);
+
+        LineTo mv1 = new LineTo();
+        mv1.setX(centerX-150);
+        mv1.setY( yy-140);
+
+        LineTo mv2 = new LineTo();
+        mv2.setX(centerX-140);
+        mv2.setY( yy-150);
+
+        LineTo mv3 = new LineTo();
+        mv3.setX(centerX-10);
+        mv3.setY( yy-20);
+
+        LineTo mv4 = new LineTo();
+        mv4.setX(centerX-20);
+        mv4.setY( yy-10);
+
+        p.getElements().add(mv);
+        p.getElements().add(mv1);
+        p.getElements().add(mv2);
+        p.getElements().add(mv3);
+        p.getElements().add(mv4);
+
+        return p;
+    }
+    protected Path hand32( )
+    {
+        double centerX = 325;
+        Color bg = Color.DARKVIOLET;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX-20);
+        mv.setY( yy+10);
+
+        LineTo mv1 = new LineTo();
+        mv1.setX(centerX-150);
+        mv1.setY( yy+140);
+
+        LineTo mv2 = new LineTo();
+        mv2.setX(centerX-140);
+        mv2.setY( yy+150);
+
+        LineTo mv3 = new LineTo();
+        mv3.setX(centerX-10);
+        mv3.setY( yy+20);
+
+        LineTo mv4 = new LineTo();
+        mv4.setX(centerX-20);
+        mv4.setY( yy+10);
+
+        p.getElements().add(mv);
+        p.getElements().add(mv1);
+        p.getElements().add(mv2);
+        p.getElements().add(mv3);
+        p.getElements().add(mv4);
+
+        return p;
+    }
+    protected Path hand42( )
+    {
+        double centerX = 325;
+        Color bg = Color.YELLOW;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX+20);
+        mv.setY( yy+10);
+
+        LineTo mv1 = new LineTo();
+        mv1.setX(centerX+150);
+        mv1.setY( yy+140);
+
+        LineTo mv2 = new LineTo();
+        mv2.setX(centerX+140);
+        mv2.setY( yy+150);
+
+        LineTo mv3 = new LineTo();
+        mv3.setX(centerX+10);
+        mv3.setY( yy+20);
+
+        LineTo mv4 = new LineTo();
+        mv4.setX(centerX+20);
+        mv4.setY( yy+10);
+
+        p.getElements().add(mv);
+        p.getElements().add(mv1);
+        p.getElements().add(mv2);
+        p.getElements().add(mv3);
+        p.getElements().add(mv4);
+
+        return p;
+    }
+
+    protected Path tri1( )
+    {
+        double centerX = 225;
+        Color bg = Color.DEEPPINK;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX+120);
+        mv.setY( yy);
+
+        LineTo mv1 = new LineTo();
+        mv1.setX(centerX+120);
+        mv1.setY( yy-120);
+
+        LineTo mv2 = new LineTo();
+        mv2.setX(centerX);
+        mv2.setY( yy-120);
+
+        LineTo mv3 = new LineTo();
+        mv3.setX(centerX+120);
+        mv3.setY( yy);
+
+        p.getElements().add(mv);
+        p.getElements().add(mv1);
+        p.getElements().add(mv2);
+        p.getElements().add(mv3);
+
+        return p;
+    }
+    protected Path tri2( )
+    {
+        double centerX = 225;
+        Color bg = Color.DEEPSKYBLUE;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX-120);
+        mv.setY( yy);
+
+        LineTo mv1 = new LineTo();
+        mv1.setX(centerX-120);
+        mv1.setY( yy-120);
+
+        LineTo mv2 = new LineTo();
+        mv2.setX(centerX);
+        mv2.setY( yy-120);
+
+        LineTo mv3 = new LineTo();
+        mv3.setX(centerX-120);
+        mv3.setY( yy);
+
+        p.getElements().add(mv);
+        p.getElements().add(mv1);
+        p.getElements().add(mv2);
+        p.getElements().add(mv3);
+
+        return p;
+    }
+    protected Path tri3( )
+    {
+        double centerX = 225;
+        Color bg = Color.DARKVIOLET;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX-120);
+        mv.setY( yy);
+
+        LineTo mv1 = new LineTo();
+        mv1.setX(centerX-120);
+        mv1.setY( yy+120);
+
+        LineTo mv2 = new LineTo();
+        mv2.setX(centerX);
+        mv2.setY( yy+120);
+
+        LineTo mv3 = new LineTo();
+        mv3.setX(centerX-120);
+        mv3.setY( yy);
+
+        p.getElements().add(mv);
+        p.getElements().add(mv1);
+        p.getElements().add(mv2);
+        p.getElements().add(mv3);
+
+        return p;
+    }
+    protected Path tri4( )
+    {
+        double centerX = 225;
+        Color bg = Color.YELLOW;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX+120);
+        mv.setY( yy);
+
+        LineTo mv1 = new LineTo();
+        mv1.setX(centerX+120);
+        mv1.setY( yy+120);
+
+        LineTo mv2 = new LineTo();
+        mv2.setX(centerX);
+        mv2.setY( yy+120);
+
+        LineTo mv3 = new LineTo();
+        mv3.setX(centerX+120);
+        mv3.setY( yy);
+
+        p.getElements().add(mv);
+        p.getElements().add(mv1);
+        p.getElements().add(mv2);
+        p.getElements().add(mv3);
+
+        return p;
+    }
+
+    protected Path tri12( )
+    {
+        double centerX = 225;
+        Color bg = Color.DEEPPINK;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX+150);
+        mv.setY( yy-50);
+
+        LineTo mv1 = new LineTo();
+        mv1.setX(centerX+150);
+        mv1.setY( yy-150);
+
+        LineTo mv2 = new LineTo();
+        mv2.setX(centerX+50);
+        mv2.setY( yy-150);
+
+        LineTo mv3 = new LineTo();
+        mv3.setX(centerX+150);
+        mv3.setY( yy-50);
+
+        p.getElements().add(mv);
+        p.getElements().add(mv1);
+        p.getElements().add(mv2);
+        p.getElements().add(mv3);
+
+        return p;
+    }
+    protected Path tri22()
+    {
+        double centerX = 225;
+        Color bg = Color.DEEPSKYBLUE;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX-150);
+        mv.setY( yy-50);
+
+        LineTo mv1 = new LineTo();
+        mv1.setX(centerX-150);
+        mv1.setY( yy-150);
+
+        LineTo mv2 = new LineTo();
+        mv2.setX(centerX-50);
+        mv2.setY( yy-150);
+
+        LineTo mv3 = new LineTo();
+        mv3.setX(centerX-150);
+        mv3.setY( yy-50);
+
+        p.getElements().add(mv);
+        p.getElements().add(mv1);
+        p.getElements().add(mv2);
+        p.getElements().add(mv3);
+
+        return p;
+    }
+    protected Path tri32()
+    {
+        double centerX = 225;
+        Color bg = Color.DARKVIOLET;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX-150);
+        mv.setY( yy+50);
+
+        LineTo mv1 = new LineTo();
+        mv1.setX(centerX-150);
+        mv1.setY( yy+150);
+
+        LineTo mv2 = new LineTo();
+        mv2.setX(centerX-50);
+        mv2.setY( yy+150);
+
+        LineTo mv3 = new LineTo();
+        mv3.setX(centerX-150);
+        mv3.setY( yy+50);
+
+        p.getElements().add(mv);
+        p.getElements().add(mv1);
+        p.getElements().add(mv2);
+        p.getElements().add(mv3);
+
+        return p;
+    }
+    protected Path tri42()
+    {
+        double centerX = 225;
+        Color bg = Color.YELLOW;
+
+        Path p = new Path();
+        p.setFillRule(FillRule.EVEN_ODD);
+        p.setFill(bg);
+        p.setStroke(bg);
+
+        MoveTo mv = new MoveTo();
+        mv.setX(centerX+150);
+        mv.setY( yy+50);
+
+        LineTo mv1 = new LineTo();
+        mv1.setX(centerX+150);
+        mv1.setY( yy+150);
+
+        LineTo mv2 = new LineTo();
+        mv2.setX(centerX+50);
+        mv2.setY( yy+150);
+
+        LineTo mv3 = new LineTo();
+        mv3.setX(centerX+150);
+        mv3.setY( yy+50);
+
+        p.getElements().add(mv);
+        p.getElements().add(mv1);
+        p.getElements().add(mv2);
+        p.getElements().add(mv3);
 
         return p;
     }
@@ -467,18 +1408,15 @@ abstract class Obstacle extends Colours
 
 class Obj1 extends Obstacle
 {
-    protected Group g1;
-    Path ring1;
-    Path ring2;
-    Path ring3;
-    Path ring4;
-
     Obj1(double centerY)
     {
-        ring1 = arc1(centerY);
-        ring2 = arc2(centerY);
-        ring3 = arc3(centerY);
-        ring4 = arc4(centerY);
+        creatednext = 0;
+        objType = 1;
+        this.yy = centerY;
+        ring1 = arc1();
+        ring2 = arc2();
+        ring3 = arc3();
+        ring4 = arc4();
         g1 = new Group(ring1,ring2,ring3,ring4);
         getChildren().addAll(g1);
         this.movement(g1);
@@ -486,7 +1424,7 @@ class Obj1 extends Obstacle
 
     public void movement(Group g)
     {
-        RotateTransition rt = new RotateTransition(Duration.millis(30500),g);
+        RotateTransition rt = new RotateTransition(Duration.millis(60000),g);
         rt.setByAngle(3600);
         rt.setCycleCount(Animation.INDEFINITE);
 
@@ -498,18 +1436,15 @@ class Obj1 extends Obstacle
 
 class Obj2 extends Obstacle
 {
-    protected Group g1;
-    Path ring1;
-    Path ring2;
-    Path ring3;
-    Path ring4;
-
     Obj2(double centerY)
     {
-        ring1 = rect1(centerY);
-        ring2 = rect2(centerY);
-        ring3 = rect3(centerY);
-        ring4 = rect4(centerY);
+        creatednext = 0;
+        objType = 2;
+        this.yy = centerY;
+        ring1 = rect1();
+        ring2 = rect2();
+        ring3 = rect3();
+        ring4 = rect4();
         g1 = new Group(ring1,ring2,ring3,ring4);
         getChildren().addAll(g1);
         this.movement(g1);
@@ -517,7 +1452,175 @@ class Obj2 extends Obstacle
 
     public void movement(Group g)
     {
-        RotateTransition rt = new RotateTransition(Duration.millis(30500),g);
+        RotateTransition rt = new RotateTransition(Duration.millis(60000),g);
+        rt.setByAngle(3600);
+        rt.setCycleCount(Animation.INDEFINITE);
+
+        if (!rt.isAutoReverse()){
+            rt.play();
+        }
+    }
+}
+
+class Obj3 extends Obstacle
+{
+    Obj3(double centerY)
+    {
+        creatednext = 0;
+        objType = 3;
+        this.yy = centerY;
+        ring1 = hand1();
+        ring2 = hand2();
+        ring3 = hand3();
+        ring4 = hand4();
+        g1 = new Group(ring1,ring2,ring3,ring4);
+        getChildren().addAll(g1);
+        this.movement(g1);
+    }
+
+    public void movement(Group g)
+    {
+        RotateTransition rt = new RotateTransition(Duration.millis(60000),g);
+        rt.setByAngle(3600);
+        rt.setCycleCount(Animation.INDEFINITE);
+
+        if (!rt.isAutoReverse()){
+            rt.play();
+        }
+    }
+}
+
+class Obj4 extends Obstacle
+{
+    Obj4(double centerY)
+    {
+        creatednext = 0;
+        objType = 4;
+        this.yy = centerY;
+        ring1 = tri1();
+        ring2 = tri2();
+        ring3 = tri3();
+        ring4 = tri4();
+        g1 = new Group(ring1,ring2,ring3,ring4);
+        getChildren().addAll(g1);
+        this.movement(g1);
+    }
+
+    public void movement(Group g)
+    {
+        RotateTransition rt = new RotateTransition(Duration.millis(60000),g);
+        rt.setByAngle(3600);
+        rt.setCycleCount(Animation.INDEFINITE);
+
+        if (!rt.isAutoReverse()){
+            rt.play();
+        }
+    }
+}
+
+class Obj5 extends Obstacle
+{
+    Obj5(double centerY)
+    {
+        creatednext = 0;
+        objType = 5;
+        this.yy = centerY;
+        ring1 = tri12();
+        ring2 = tri22();
+        ring3 = tri32();
+        ring4 = tri42();
+        g1 = new Group(ring1,ring2,ring3,ring4);
+        getChildren().addAll(g1);
+        this.movement(g1);
+    }
+
+    public void movement(Group g)
+    {
+        RotateTransition rt = new RotateTransition(Duration.millis(60000),g);
+        rt.setByAngle(3600);
+        rt.setCycleCount(Animation.INDEFINITE);
+
+        if (!rt.isAutoReverse()){
+            rt.play();
+        }
+    }
+}
+
+class Obj6 extends Obstacle
+{
+    Obj6(double centerY)
+    {
+        creatednext = 0;
+        objType = 6;
+        this.yy = centerY;
+        ring1 = rect12();
+        ring2 = rect22();
+        ring3 = rect32();
+        ring4 = rect42();
+        g1 = new Group(ring1,ring2,ring3,ring4);
+        getChildren().addAll(g1);
+        this.movement(g1);
+    }
+
+    public void movement(Group g)
+    {
+        RotateTransition rt = new RotateTransition(Duration.millis(60000),g);
+        rt.setByAngle(3600);
+        rt.setCycleCount(Animation.INDEFINITE);
+
+        if (!rt.isAutoReverse()){
+            rt.play();
+        }
+    }
+}
+
+class Obj7 extends Obstacle
+{
+    Obj7(double centerY)
+    {
+        creatednext = 0;
+        objType = 7;
+        this.yy = centerY;
+        ring1 = arc12();
+        ring2 = arc22();
+        ring3 = arc32();
+        ring4 = arc42();
+        g1 = new Group(ring1,ring2,ring3,ring4);
+        getChildren().addAll(g1);
+        this.movement(g1);
+    }
+
+    public void movement(Group g)
+    {
+        RotateTransition rt = new RotateTransition(Duration.millis(60000),g);
+        rt.setByAngle(3600);
+        rt.setCycleCount(Animation.INDEFINITE);
+
+        if (!rt.isAutoReverse()){
+            rt.play();
+        }
+    }
+}
+
+class Obj8 extends Obstacle
+{
+    Obj8(double centerY)
+    {
+        creatednext = 0;
+        objType = 8;
+        this.yy = centerY;
+        ring1 = hand12();
+        ring2 = hand22();
+        ring3 = hand32();
+        ring4 = hand42();
+        g1 = new Group(ring1,ring2,ring3,ring4);
+        getChildren().addAll(g1);
+        this.movement(g1);
+    }
+
+    public void movement(Group g)
+    {
+        RotateTransition rt = new RotateTransition(Duration.millis(60000),g);
         rt.setByAngle(3600);
         rt.setCycleCount(Animation.INDEFINITE);
 
@@ -647,6 +1750,7 @@ public class Main extends Application
     protected Timeline t5;
     ImageView goover;
     protected int paused = 0;
+    protected int loop = 1;
 
     class Game
     {
@@ -656,6 +1760,15 @@ public class Main extends Application
         private int rungame = 0;
         private int bonusgame = 0;
         protected Ball ball;
+        ColourSwitcher cs1;
+        Obstacle o1;
+        Star s1;
+        ColourSwitcher cs2;
+        Obstacle o2;
+        Star s2;
+        ColourSwitcher cs3;
+        Obstacle o3;
+        Star s3;
 
         public void CollisionFunc()
         {
@@ -680,6 +1793,7 @@ public class Main extends Application
             GameOver = 0;
             paused = 0;
             score = scorevalue;
+            loop = 1;
 
             Pane top = new Pane();
             top.setPrefSize(450, 800);
@@ -696,15 +1810,16 @@ public class Main extends Application
             goover.setFitWidth(450);
 
             ball = new Ball(stage);
-            ColourSwitcher cs1 = new ColourSwitcher(ball,550);
-            Obj1 o1 = new Obj1(320);
-            Star s1 = new Star(300);
-            ColourSwitcher cs2 = new ColourSwitcher(ball,70);
-            Obj1 o2 = new Obj1(-180);
-            Star s2 = new Star(-200);
-            ColourSwitcher cs3 = new ColourSwitcher(ball,-460);
-            Obj2 o3 = new Obj2(-630);
-            Star s3 = new Star(-650);
+            cs1 = new ColourSwitcher(ball,550);
+            o1 = new Obj1(280);
+            s1 = new Star(260);
+            cs2 = new ColourSwitcher(ball,-1000);
+            o2 = new Obj2(-1000);
+            s2 = new Star(-1000);
+            cs3 = new ColourSwitcher(ball,-1000);
+            o3 = new Obj3(-1000);
+            s3 = new Star(-1000);
+
             goover.setVisible(false);
             ball.hitgrnd = 0;
             ball.hitobstacle = 0;
@@ -730,18 +1845,21 @@ public class Main extends Application
                     cs1.sw1.setLayoutY(cs1.sw1.getLayoutY()+3);
                     cs1.circle.setLayoutY(cs1.circle.getLayoutY()+3);
                     o1.g1.setLayoutY(o1.g1.getLayoutY()+3);
+                    o1.yy += 3;
                     s1.circle.setLayoutY(s1.circle.getLayoutY()+3);
                     s1.s1.setLayoutY(s1.s1.getLayoutY()+3);
 
                     cs2.sw1.setLayoutY(cs2.sw1.getLayoutY()+3);
                     cs2.circle.setLayoutY(cs2.circle.getLayoutY()+3);
                     o2.g1.setLayoutY(o2.g1.getLayoutY()+3);
+                    o2.yy += 3;
                     s2.circle.setLayoutY(s2.circle.getLayoutY()+3);
                     s2.s1.setLayoutY(s2.s1.getLayoutY()+3);
 
                     cs3.sw1.setLayoutY(cs3.sw1.getLayoutY()+3);
                     cs3.circle.setLayoutY(cs3.circle.getLayoutY()+3);
                     o3.g1.setLayoutY(o3.g1.getLayoutY()+3);
+                    o3.yy += 3;
                     s3.circle.setLayoutY(s3.circle.getLayoutY()+3);
                     s3.s1.setLayoutY(s3.s1.getLayoutY()+3);
                 }
@@ -754,18 +1872,21 @@ public class Main extends Application
                     cs1.sw1.setLayoutY(cs1.sw1.getLayoutY()+5);
                     cs1.circle.setLayoutY(cs1.circle.getLayoutY()+5);
                     o1.g1.setLayoutY(o1.g1.getLayoutY()+5);
+                    o1.yy += 5;
                     s1.circle.setLayoutY(s1.circle.getLayoutY()+5);
                     s1.s1.setLayoutY(s1.s1.getLayoutY()+5);
 
                     cs2.sw1.setLayoutY(cs2.sw1.getLayoutY()+5);
                     cs2.circle.setLayoutY(cs2.circle.getLayoutY()+5);
                     o2.g1.setLayoutY(o2.g1.getLayoutY()+5);
+                    o2.yy += 5;
                     s2.circle.setLayoutY(s2.circle.getLayoutY()+5);
                     s2.s1.setLayoutY(s2.s1.getLayoutY()+5);
 
                     cs3.sw1.setLayoutY(cs3.sw1.getLayoutY()+5);
                     cs3.circle.setLayoutY(cs3.circle.getLayoutY()+5);
                     o3.g1.setLayoutY(o3.g1.getLayoutY()+5);
+                    o3.yy += 5;
                     s3.circle.setLayoutY(s3.circle.getLayoutY()+5);
                     s3.s1.setLayoutY(s3.s1.getLayoutY()+5);
                 }
@@ -1113,6 +2234,190 @@ public class Main extends Application
                         t2.pause();
                         t4.pause();
                     }
+
+                    if(o1.yy>=280)
+                    {
+                        if(o1.creatednext==0)
+                        {
+                            switch(loop)
+                            {
+                                case 1:
+                                    cs2 = new ColourSwitcher(ball,-10);
+                                    o2 = new Obj2(-300);
+                                    s2 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 2:
+                                    cs2 = new ColourSwitcher(ball,-10);
+                                    o2 = new Obj3(-300);
+                                    s2 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 3:
+                                    cs2 = new ColourSwitcher(ball,-10);
+                                    o2 = new Obj4(-300);
+                                    s2 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 4:
+                                    cs2 = new ColourSwitcher(ball,-10);
+                                    o2 = new Obj5(-300);
+                                    s2 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 5:
+                                    cs2 = new ColourSwitcher(ball,-10);
+                                    o2 = new Obj6(-300);
+                                    s2 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 6:
+                                    cs2 = new ColourSwitcher(ball,-10);
+                                    o2 = new Obj7(-300);
+                                    s2 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 7:
+                                    cs2 = new ColourSwitcher(ball,-10);
+                                    o2 = new Obj8(-300);
+                                    s2 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 8:
+                                    cs2 = new ColourSwitcher(ball,-10);
+                                    o2 = new Obj1(-300);
+                                    s2 = new Star(-320);
+                                    loop = 1;
+                                    break;
+                            }
+
+                            o1.creatednext = 1;
+                            top.getChildren().removeAll(goover,igmenu,scoreDisplay);
+                            top.getChildren().addAll(cs2,o2,s2,goover,igmenu,scoreDisplay);
+                        }
+                    }
+                    if(o2.yy>=280)
+                    {
+                        if(o2.creatednext==0)
+                        {
+                            switch(loop)
+                            {
+                                case 1:
+                                    cs3 = new ColourSwitcher(ball,-10);
+                                    o3 = new Obj2(-300);
+                                    s3 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 2:
+                                    cs3 = new ColourSwitcher(ball,-10);
+                                    o3 = new Obj3(-300);
+                                    s3 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 3:
+                                    cs3 = new ColourSwitcher(ball,-10);
+                                    o3 = new Obj4(-300);
+                                    s3 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 4:
+                                    cs3 = new ColourSwitcher(ball,-10);
+                                    o3 = new Obj5(-300);
+                                    s3 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 5:
+                                    cs3 = new ColourSwitcher(ball,-10);
+                                    o3 = new Obj6(-300);
+                                    s3 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 6:
+                                    cs3 = new ColourSwitcher(ball,-10);
+                                    o3 = new Obj7(-300);
+                                    s3 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 7:
+                                    cs3 = new ColourSwitcher(ball,-10);
+                                    o3 = new Obj8(-300);
+                                    s3 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 8:
+                                    cs3 = new ColourSwitcher(ball,-10);
+                                    o3 = new Obj1(-300);
+                                    s3 = new Star(-320);
+                                    loop = 1;
+                                    break;
+                            }
+
+                            o2.creatednext = 1;
+                            top.getChildren().removeAll(goover,igmenu,scoreDisplay);
+                            top.getChildren().addAll(cs3,o3,s3,goover,igmenu,scoreDisplay);
+                        }
+                    }
+                    if(o3.yy>=280)
+                    {
+                        if(o3.creatednext==0)
+                        {
+                            switch(loop)
+                            {
+                                case 1:
+                                    cs1 = new ColourSwitcher(ball,-10);
+                                    o1 = new Obj2(-300);
+                                    s1 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 2:
+                                    cs1 = new ColourSwitcher(ball,-10);
+                                    o1 = new Obj3(-300);
+                                    s1 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 3:
+                                    cs1 = new ColourSwitcher(ball,-10);
+                                    o1 = new Obj4(-300);
+                                    s1 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 4:
+                                    cs1 = new ColourSwitcher(ball,-10);
+                                    o1 = new Obj5(-300);
+                                    s1 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 5:
+                                    cs1 = new ColourSwitcher(ball,-10);
+                                    o1 = new Obj6(-300);
+                                    s1 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 6:
+                                    cs1 = new ColourSwitcher(ball,-10);
+                                    o1 = new Obj7(-300);
+                                    s1 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 7:
+                                    cs1 = new ColourSwitcher(ball,-10);
+                                    o1 = new Obj8(-300);
+                                    s1 = new Star(-320);
+                                    loop++;
+                                    break;
+                                case 8:
+                                    cs1 = new ColourSwitcher(ball,-10);
+                                    o1 = new Obj1(-300);
+                                    s1 = new Star(-320);
+                                    loop = 1;
+                                    break;
+                            }
+
+                            o3.creatednext = 1;
+                            top.getChildren().removeAll(goover,igmenu,scoreDisplay);
+                            top.getChildren().addAll(cs1,o1,s1,goover,igmenu,scoreDisplay);
+                        }
+                    }
                 }
             }));
             t3.setCycleCount(Timeline.INDEFINITE);
@@ -1385,7 +2690,7 @@ public class Main extends Application
 
                     btnSave1 = new menuButtons("SAVE1 : "+sgames[0]+" PTS", 0, 1);
 
-                    btnSave2 = new menuButtons("SAVE1 : "+sgames[1]+" PTS", 0, 1);
+                    btnSave2 = new menuButtons("SAVE2 : "+sgames[1]+" PTS", 0, 1);
                 }
                 menuButtons btnExit = new menuButtons("EXIT", 0,1);
                 btnExit.setOnMouseClicked(event -> {
@@ -1513,9 +2818,9 @@ public class Main extends Application
 
 
 
-                    btnSave1 = new menuButtons("SAVE1 : "+sgames[0]+" PTS", 0, 1);
+                btnSave1 = new menuButtons("SAVE1 : "+sgames[0]+" PTS", 0, 1);
 
-                    btnSave2 = new menuButtons("SAVE1 : "+sgames[1]+" PTS", 0, 1);
+                btnSave2 = new menuButtons("SAVE2 : "+sgames[1]+" PTS", 0, 1);
                 btnSave1.setOnMouseClicked(event -> {
                     System.out.println("Loading Game...");
                     new Game(stage,sgames[0]);
