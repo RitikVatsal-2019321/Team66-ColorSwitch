@@ -1,6 +1,7 @@
 //GROUP 66
 //Ritik Vatsal (2019321) | Vaibhav Saxena (2019342)
 
+import java.io.*;
 import javafx.animation.*;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -40,6 +41,7 @@ import javafx.scene.media.MediaPlayer;
 import javax.sound.midi.Soundbank;
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.Scanner;
 import java.util.Timer;
 
 class Colours extends Parent
@@ -269,7 +271,7 @@ abstract class Obstacle extends Colours
 
         VLineTo vertical = new VLineTo();
         vertical.setY(centerY + rad);
-        
+
         ArcTo arcdraw2 = new ArcTo();
         arcdraw2.setRadiusX(rad);
         arcdraw2.setRadiusY(rad);
@@ -554,8 +556,8 @@ class Star extends Parent
     {
         FadeTransition ft = new FadeTransition(Duration.millis(500),s1);
 
-            ft.setFromValue(0);
-            ft.setToValue(1);
+        ft.setFromValue(0);
+        ft.setToValue(1);
 
         ft.setAutoReverse(true);
         s1.setVisible(true);
@@ -626,10 +628,12 @@ class ColourSwitcher extends Colours
 public class Main extends Application
 {
     int GameOver;
+    public int CurrScore;
     MediaPlayer mp;
     MediaPlayer ded;
     MediaPlayer pnt;
     MediaPlayer swch;
+    public static int[] sgames;
     private GameMenu igmenu;
     private GameMenu scoreDisplay;
     private GameMenu gameMenu;
@@ -1023,6 +1027,7 @@ public class Main extends Application
                             yesyesyes(1);
                             System.out.println("Score +1!");
                             score++;
+                            CurrScore=(int)score;
                             String newscore = "SCORE : " + Long.toString(score);
                             scoreDisplay.score.setText(newscore);
                             s1.hide();
@@ -1046,6 +1051,7 @@ public class Main extends Application
                             yesyesyes(1);
                             System.out.println("Score +1!");
                             score++;
+                            CurrScore=(int)score;
                             String newscore = "SCORE : " + Long.toString(score);
                             scoreDisplay.score.setText(newscore);
                             s2.hide();
@@ -1069,6 +1075,7 @@ public class Main extends Application
                             yesyesyes(1);
                             System.out.println("Score +1!");
                             score++;
+                            CurrScore=(int)score;
                             String newscore = "SCORE : " + Long.toString(score);
                             scoreDisplay.score.setText(newscore);
                             s3.hide();
@@ -1355,9 +1362,9 @@ public class Main extends Application
 
                 if (vision>1) {
 
-                    btnSave1 = new menuButtons("SAVE1 : 2 PTS", 0, 1);
+                    btnSave1 = new menuButtons("SAVE1 : "+sgames[0]+" PTS", 0, 1);
 
-                    btnSave2 = new menuButtons("SAVE2 : 7 PTS", 0, 1);
+                    btnSave2 = new menuButtons("SAVE1 : "+sgames[1]+" PTS", 0, 1);
                 }
                 menuButtons btnExit = new menuButtons("EXIT", 0,1);
                 btnExit.setOnMouseClicked(event -> {
@@ -1366,11 +1373,11 @@ public class Main extends Application
                 });
                 btnSave1.setOnMouseClicked(event -> {
                     System.out.println("Loading Game...");
-                    new Game(stage,2);
+                    new Game(stage,sgames[0]);
                 });
                 btnSave2.setOnMouseClicked(event -> {
                     System.out.println("Loading Game...");
-                    new Game(stage,7);
+                    new Game(stage,sgames[1]);
                 });
 
                 menu0.getChildren().addAll(btnnew, btnOptions, btnExit);
@@ -1418,7 +1425,23 @@ public class Main extends Application
                 });
 
                 menuButtons btnsave = new menuButtons("SAVE GAME", 0,1);
+                btnsave.setOnMouseClicked(event -> {
+                    sgames[1]=sgames[0];
+                    sgames[0]=CurrScore;
+                    File file = new File("C:/Resources/userSaves.ini");
 
+
+                    try {
+                        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                        BufferedWriter bw = new BufferedWriter(fw);
+                        bw.write(sgames[0] + "\n" + sgames[1]);
+                        bw.close();
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                });
                 Rectangle bg = new Rectangle(450, 800);
                 bg.setFill(Color.GRAY);
                 menuButtons Pause = new menuButtons("PAUSE", 0,65);
@@ -1630,8 +1653,13 @@ public class Main extends Application
         }
     }
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws FileNotFoundException
     {
+        File file=new File("C:/Resources/userSaves.ini");
+        Scanner SaveLoad = new Scanner(file);
+        sgames=new int[2];
+        sgames[0]=SaveLoad.nextInt();
+        sgames[1]=SaveLoad.nextInt();
         System.out.println("Starting Game...");
         launch();
         System.out.println("Exiting Game...");
