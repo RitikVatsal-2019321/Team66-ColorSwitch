@@ -633,6 +633,7 @@ public class Main extends Application
     MediaPlayer ded;
     MediaPlayer pnt;
     MediaPlayer swch;
+    MediaPlayer heet;
     public static int[] sgames;
     private GameMenu igmenu;
     private GameMenu scoreDisplay;
@@ -644,7 +645,7 @@ public class Main extends Application
     protected Timeline t3;
     protected Timeline t4;
     protected Timeline t5;
-
+    ImageView goover;
     protected int paused = 0;
 
     class Game
@@ -667,6 +668,8 @@ public class Main extends Application
                 MissionFailed(1);
                 System.out.println("Hit Obstacle! Game Over!");
                 GameOver = 1;
+                goover.setVisible(true);
+
             }
         }
 
@@ -677,13 +680,20 @@ public class Main extends Application
             GameOver = 0;
             paused = 0;
             score = scorevalue;
+
             Pane top = new Pane();
             top.setPrefSize(450, 800);
             Scene scene2 = new Scene(top);
+
             Image bgHS2 = new Image("file:///C:/Resources/hs2.png");
             ImageView imgvu = new ImageView(bgHS2);
             imgvu.setFitHeight(800);
             imgvu.setFitWidth(450);
+
+            Image gover = new Image("file:///C:/Resources/gover.png");
+            goover = new ImageView(gover);
+            goover.setFitHeight(800);
+            goover.setFitWidth(450);
 
             ball = new Ball(stage);
             ColourSwitcher cs1 = new ColourSwitcher(ball,550);
@@ -695,7 +705,7 @@ public class Main extends Application
             ColourSwitcher cs3 = new ColourSwitcher(ball,-460);
             Obj2 o3 = new Obj2(-630);
             Star s3 = new Star(-650);
-
+            goover.setVisible(false);
             ball.hitgrnd = 0;
             ball.hitobstacle = 0;
             igmenu = new GameMenu(stage,2);
@@ -704,7 +714,7 @@ public class Main extends Application
             scoreDisplay.setVisible(true);
             String newscore = "SCORE : " + Long.toString(score);
             scoreDisplay.score.setText(newscore);
-            top.getChildren().addAll(imgvu,ball,cs1,o1,s1,cs2,o2,s2,cs3,o3,s3,igmenu,scoreDisplay);
+            top.getChildren().addAll(imgvu,ball,cs1,o1,s1,cs2,o2,s2,cs3,o3,s3,goover,igmenu,scoreDisplay);
             int view;
             if ((view=4)<6)
             {
@@ -1094,6 +1104,7 @@ public class Main extends Application
                             MissionFailed(1);
                             System.out.println("Hit Ground! Game Over!");
                             GameOver = 1;
+                            goover.setVisible(true);
                         }
                     }
                     else if(ball.hitobstacle==1)
@@ -1159,6 +1170,14 @@ public class Main extends Application
         swch =new MediaPlayer(bgMusic);
         if (status==1)swch.play();
         if (status==0)swch.pause();
+    }
+
+    public void hit(int status) {
+        Media bgMusic;
+        bgMusic = new Media("file:///C:/Resources/hit.mp3");
+        heet =new MediaPlayer(bgMusic);
+        if (status==1)heet.play();
+        if (status==0)heet.pause();
     }
 
 
@@ -1252,6 +1271,8 @@ public class Main extends Application
 
         });
 
+
+
         stage.setScene(scene1);
         stage.centerOnScreen();
 
@@ -1263,7 +1284,7 @@ public class Main extends Application
         public Text score;
 
         public GameMenu(Stage stage, int type)
-        {
+        {   setOnMouseClicked(event -> {hit(1); });
             if (type==0){
                 VBox menu0 = new VBox(10);
                 VBox menu1 = new VBox(10);
